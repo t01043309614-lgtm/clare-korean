@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Clare's Korean Flashcards</title>
+<style>
+  :root{
+    --ivory:#FBF7F1;
+    --card:#FFFFFF;
+    --mint:#4FBBA6;
+    --mint-dark:#379485;
+    --mint-soft:#E7F5F1;
+    --ink:#2E2A26;
+    --muted:#8A8378;
+    --border:#EAE2D4;
+  }
+  *{ box-sizing:border-box; }
+  html,body{
+    margin:0;
+    padding:0;
+    background:var(--ivory);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe UI","Malgun Gothic","Noto Sans KR",sans-serif;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .wrap{
+    max-width:1100px;
+    margin:0 auto;
+    padding:32px 20px 60px;
+  }
+  header{
+    text-align:center;
+    margin-bottom:28px;
+  }
+  .brand{
+    display:inline-block;
+    font-size:0.72rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--mint-dark);
+    background:var(--mint-soft);
+    padding:6px 14px;
+    border-radius:999px;
+    margin-bottom:14px;
+    font-weight:600;
+  }
+  h1{
+    margin:0 0 8px;
+    font-size:clamp(1.5rem,5vw,2.1rem);
+    font-weight:700;
+    letter-spacing:-0.01em;
+  }
+  .subtitle{
+    margin:0;
+    color:var(--muted);
+    font-size:clamp(0.9rem,3vw,1rem);
+    font-style:italic;
+  }
+
+  .tabs{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px;
+    margin:28px 0 16px;
+  }
+  .tab-btn{
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--ink);
+    padding:10px 18px;
+    border-radius:999px;
+    font-size:0.85rem;
+    font-weight:600;
+    cursor:pointer;
+    transition:background 0.15s ease,color 0.15s ease,border-color 0.15s ease;
+    white-space:nowrap;
+  }
+  .tab-btn:hover{
+    border-color:var(--mint);
+  }
+  .tab-btn.active{
+    background:var(--mint);
+    border-color:var(--mint);
+    color:#fff;
+  }
+
+  .controls{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:8px;
+  }
+  .ctrl-btn{
+    border:1px solid var(--mint);
+    background:var(--card);
+    color:var(--mint-dark);
+    padding:9px 16px;
+    border-radius:10px;
+    font-size:0.85rem;
+    font-weight:600;
+    cursor:pointer;
+    transition:background 0.15s ease,color 0.15s ease;
+  }
+  .ctrl-btn:hover{
+    background:var(--mint-soft);
+  }
+  .ctrl-btn:active{
+    background:var(--mint);
+    color:#fff;
+  }
+  .card-count{
+    color:var(--muted);
+    font-size:0.82rem;
+    margin:14px 0 22px;
+    text-align:center;
+  }
+
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+  }
+  @media (min-width:640px){
+    .cards-grid{ grid-template-columns:repeat(3,1fr); gap:16px; }
+  }
+  @media (min-width:980px){
+    .cards-grid{ grid-template-columns:repeat(4,1fr); gap:20px; }
+  }
+
+  .flip-card{
+    perspective:1200px;
+  }
+  .flip-card-inner{
+    position:relative;
+    width:100%;
+    transition:transform 0.55s cubic-bezier(0.4,0.2,0.2,1);
+    transform-style:preserve-3d;
+    cursor:pointer;
+  }
+  .flip-card.flipped .flip-card-inner{
+    transform:rotateY(180deg);
+  }
+  .flip-card-front,
+  .flip-card-back{
+    backface-visibility:hidden;
+    -webkit-backface-visibility:hidden;
+    width:100%;
+    border-radius:16px;
+    border:1px solid var(--border);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:22px 14px;
+    min-height:118px;
+    user-select:none;
+  }
+  .flip-card-front{
+    position:relative;
+    background:var(--card);
+  }
+  .flip-card-back{
+    position:absolute;
+    inset:0;
+    height:100%;
+    transform:rotateY(180deg);
+    background:var(--mint-soft);
+    border-color:var(--mint);
+  }
+  .card-en{
+    font-size:clamp(0.92rem,3.4vw,1.08rem);
+    font-weight:600;
+    line-height:1.35;
+    overflow-wrap:break-word;
+  }
+  .hint{
+    margin-top:10px;
+    font-size:0.68rem;
+    color:var(--muted);
+    letter-spacing:0.03em;
+  }
+  .card-kr{
+    font-size:clamp(1.05rem,4vw,1.3rem);
+    font-weight:700;
+    color:var(--ink);
+    word-break:keep-all;
+    line-height:1.35;
+  }
+  .card-rr{
+    margin-top:8px;
+    font-size:clamp(0.74rem,2.6vw,0.88rem);
+    color:var(--mint-dark);
+    font-style:italic;
+    overflow-wrap:break-word;
+  }
+  .flip-card-back .audio-btn{
+    margin-top:12px;
+  }
+  .flip-card.has-audio .flip-card-front{
+    min-height:200px;
+  }
+  .flip-card.has-audio .flip-card-back{
+    height:auto;
+    min-height:200px;
+  }
+
+  footer{
+    text-align:center;
+    margin-top:48px;
+    padding-top:20px;
+    border-top:1px solid var(--border);
+    color:var(--muted);
+    font-size:0.82rem;
+  }
+  footer a{
+    color:var(--mint-dark);
+    text-decoration:none;
+  }
+  footer a:hover{
+    text-decoration:underline;
+  }
+
+  .corner-nav{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px;
+    margin:28px 0 4px;
+  }
+  .corner-btn{
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--ink);
+    padding:11px 22px;
+    border-radius:999px;
+    font-size:0.9rem;
+    font-weight:700;
+    cursor:pointer;
+    transition:background 0.15s ease,color 0.15s ease,border-color 0.15s ease;
+    white-space:nowrap;
+  }
+  .corner-btn:hover{
+    border-color:var(--mint);
+  }
+  .corner-btn.active{
+    background:var(--mint);
+    border-color:var(--mint);
+    color:#fff;
+  }
+
+  .corner{
+    display:none;
+  }
+  .corner.active{
+    display:block;
+  }
+
+  .grammar-intro{
+    text-align:center;
+    color:var(--muted);
+    font-size:0.85rem;
+    font-style:italic;
+    margin:24px 0 22px;
+  }
+  .grammar-list{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    max-width:720px;
+    margin:0 auto;
+  }
+  .grammar-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:22px 20px;
+  }
+  .grammar-badge{
+    display:inline-block;
+    font-size:0.68rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--mint-dark);
+    background:var(--mint-soft);
+    padding:4px 10px;
+    border-radius:999px;
+    font-weight:700;
+    margin-bottom:10px;
+  }
+  .grammar-title{
+    margin:0 0 4px;
+    font-size:clamp(1.15rem,4.5vw,1.5rem);
+    font-weight:700;
+    color:var(--ink);
+    word-break:keep-all;
+  }
+  .grammar-english{
+    margin:0 0 16px;
+    color:var(--mint-dark);
+    font-weight:600;
+    font-size:0.95rem;
+  }
+  .grammar-label{
+    display:block;
+    font-size:0.68rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--muted);
+    font-weight:700;
+    margin-bottom:6px;
+  }
+  .grammar-when{
+    margin-bottom:18px;
+  }
+  .grammar-when p{
+    margin:0;
+    font-size:0.9rem;
+    line-height:1.55;
+    color:var(--ink);
+  }
+  .grammar-examples{
+    display:flex;
+    flex-direction:column;
+  }
+  .example-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:12px 0;
+    border-top:1px solid var(--border);
+  }
+  .example-row:first-of-type{
+    border-top:none;
+    padding-top:0;
+  }
+  .example-text{
+    flex:1;
+    min-width:0;
+  }
+  .example-kr{
+    margin:0;
+    font-size:clamp(1rem,4vw,1.15rem);
+    font-weight:700;
+    color:var(--ink);
+    word-break:keep-all;
+    line-height:1.4;
+    overflow-wrap:break-word;
+  }
+  .example-rr{
+    margin:4px 0 0;
+    font-size:clamp(0.72rem,2.4vw,0.82rem);
+    color:var(--mint-dark);
+    font-style:italic;
+    overflow-wrap:break-word;
+  }
+  .example-en{
+    margin:4px 0 0;
+    font-size:clamp(0.82rem,2.8vw,0.92rem);
+    color:var(--muted);
+    overflow-wrap:break-word;
+  }
+  .audio-btn{
+    flex-shrink:0;
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    border:1px solid var(--mint);
+    background:var(--card);
+    font-size:1rem;
+    line-height:1;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:background 0.15s ease;
+    padding:0;
+  }
+  .audio-btn:hover:not(:disabled){
+    background:var(--mint-soft);
+  }
+  .audio-btn:disabled{
+    border-color:var(--border);
+    color:var(--muted);
+    cursor:not-allowed;
+    opacity:0.55;
+    background:var(--ivory);
+  }
+
+  .reaction-list{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    max-width:720px;
+    margin:0 auto;
+  }
+  .reaction-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:22px 20px;
+  }
+  .reaction-badge{
+    display:inline-block;
+    font-size:0.68rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--mint-dark);
+    background:var(--mint-soft);
+    padding:4px 10px;
+    border-radius:999px;
+    font-weight:700;
+    margin-bottom:10px;
+  }
+  .reaction-kr{
+    margin:0 0 4px;
+    font-size:clamp(1.15rem,4.5vw,1.5rem);
+    font-weight:700;
+    color:var(--ink);
+    word-break:keep-all;
+  }
+  .reaction-rr{
+    margin:0 0 6px;
+    font-size:clamp(0.78rem,2.6vw,0.88rem);
+    color:var(--mint-dark);
+    font-style:italic;
+  }
+  .reaction-meaning{
+    margin:0 0 16px;
+    color:var(--mint-dark);
+    font-weight:600;
+    font-size:0.95rem;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="brand">Stylish Korean Clare</span>
+      <h1>Clare's Korean</h1>
+      <p class="subtitle">Real Korean for real conversations.</p>
+    </header>
+
+    <nav class="corner-nav" id="cornerNav">
+      <button class="corner-btn active" type="button" data-corner="flashcards">Flashcards</button>
+      <button class="corner-btn" type="button" data-corner="grammar">Grammar</button>
+      <button class="corner-btn" type="button" data-corner="reactions">Reactions</button>
+    </nav>
+
+    <section class="corner active" id="corner-flashcards">
+      <nav class="tabs" id="tabs"></nav>
+
+      <div class="controls">
+        <button class="ctrl-btn" id="flipAllBtn">Flip all</button>
+        <button class="ctrl-btn" id="shuffleBtn">Shuffle</button>
+      </div>
+      <p class="card-count" id="cardCount"></p>
+
+      <main class="cards-grid" id="cardsGrid"></main>
+    </section>
+
+    <section class="corner" id="corner-grammar">
+      <p class="grammar-intro">Learn how real Korean sentences are built, one pattern at a time.</p>
+      <div class="grammar-list" id="grammarList"></div>
+    </section>
+
+    <section class="corner" id="corner-reactions">
+      <p class="grammar-intro">Real reactions Koreans use every day.</p>
+      <div class="reaction-list" id="reactionsList"></div>
+    </section>
+
+    <footer>
+      Made by Clare &middot; <a href="https://instagram.com/stylishkoreanclare" target="_blank" rel="noopener">@stylishkoreanclare</a>
+    </footer>
+  </div>
+
+<script>
+(function(){
+  "use strict";
+
+  var sections = [
+    {
+      id: "everyday",
+      label: "Everyday Korean",
+      cards: [
+        { kr:"안녕하세요", en:"hello", rr:"annyeonghaseyo", audio:"assets/audio/everyday/annyeonghaseyo.mp3" },
+        { kr:"감사합니다", en:"thank you", rr:"gamsahamnida", audio:"assets/audio/everyday/gamsahamnida.mp3" },
+        { kr:"괜찮아요", en:"it's okay", rr:"gwaenchanayo", audio:"assets/audio/everyday/gwaenchanayo.mp3" },
+        { kr:"맞아요", en:"that's right", rr:"majayo", audio:"assets/audio/everyday/majayo.mp3" },
+        { kr:"잠깐만요", en:"just a moment", rr:"jamkkanmanyo", audio:"assets/audio/everyday/jamkkanmanyo.mp3" },
+        { kr:"오랜만이에요", en:"long time no see", rr:"oraenmanieyo", audio:"assets/audio/everyday/oraenmanieyo.mp3" },
+        { kr:"다녀오세요", en:"see you", rr:"danyeooseyo", audio:"assets/audio/everyday/danyeooseyo.mp3" },
+        { kr:"잘 부탁드립니다", en:"I look forward to working with you", rr:"jal butakdeurimnida", audio:"assets/audio/everyday/jal-butakdeurimnida.mp3" },
+        { kr:"별말씀을요", en:"you're welcome", rr:"byeolmalsseumeulyo", audio:"assets/audio/everyday/byeolmalsseumeulyo.mp3" },
+        { kr:"화이팅", en:"you can do it", rr:"hwaiting", audio:"assets/audio/everyday/hwaiting.mp3" }
+      ]
+    },
+    {
+      id: "real",
+      label: "Real Korean Expressions",
+      cards: [
+        { kr:"헐", en:"no way / wow", rr:"heol", audio:"assets/audio/real/heol.mp3" },
+        { kr:"말이 안 돼", en:"no way", rr:"mari an dwae", audio:"assets/audio/real/mari-an-dwae.mp3" },
+        { kr:"그럴 수 있지", en:"that can happen", rr:"geureol su itji", audio:"assets/audio/real/geureol-su-itji.mp3" },
+        { kr:"별거 아니야", en:"it's no big deal", rr:"byeolgeo aniya", audio:"assets/audio/real/byeolgeo-aniya.mp3" },
+        { kr:"아깝다", en:"what a waste", rr:"akkapda", audio:"assets/audio/real/akkapda.mp3" },
+        { kr:"눈치", en:"reading the room", rr:"nunchi", audio:"assets/audio/real/nunchi.mp3" },
+        { kr:"장난 아니야", en:"no joke", rr:"jangnan aniya", audio:"assets/audio/real/jangnan-aniya.mp3" },
+        { kr:"진국이에요", en:"the real deal", rr:"jingugieyo", audio:"assets/audio/real/jingugieyo.mp3" },
+        { kr:"덕분에", en:"thanks to you", rr:"deokbune", audio:"assets/audio/real/deokbune.mp3" },
+        { kr:"설레요", en:"I'm excited", rr:"seolleyo", audio:"assets/audio/real/seolleyo.mp3" },
+        { kr:"인정", en:"agreed / fair enough", rr:"injeong", audio:"assets/audio/real/injeong.mp3" },
+        { kr:"소름", en:"that gives me chills", rr:"soreum", audio:"assets/audio/real/soreum.mp3" }
+      ]
+    },
+    {
+      id: "food",
+      label: "Food & Cafe Korean",
+      cards: [
+        { kr:"입맛에 맞아요?", en:"does it suit your taste?", rr:"immase majayo?", audio:"assets/audio/food/immase-majayo.mp3" },
+        { kr:"맛있어요", en:"it's delicious", rr:"masisseoyo", audio:"assets/audio/food/masisseoyo.mp3" },
+        { kr:"잘 먹겠습니다", en:"thank you for the meal", rr:"jal meokgetseumnida", audio:"assets/audio/food/jal-meokgetseumnida.mp3" },
+        { kr:"집밥", en:"home-cooked food", rr:"jipbap", audio:"assets/audio/food/jipbap.mp3" },
+        { kr:"포장이요", en:"to go, please", rr:"pojangiyo", audio:"assets/audio/food/pojangiyo.mp3" },
+        { kr:"메뉴 주세요", en:"menu, please", rr:"menyu juseyo", audio:"assets/audio/food/menyu-juseyo.mp3" },
+        { kr:"물 주세요", en:"water, please", rr:"mul juseyo", audio:"assets/audio/food/mul-juseyo.mp3" },
+        { kr:"안 맵게 해주세요", en:"please make it not spicy", rr:"an maepge haejuseyo", audio:"assets/audio/food/an-maepge-haejuseyo.mp3" },
+        { kr:"하나 주세요", en:"one, please", rr:"hana juseyo", audio:"assets/audio/food/hana-juseyo.mp3" },
+        { kr:"잘 먹었습니다", en:"thank you for the meal", rr:"jal meogeotseumnida", audio:"assets/audio/food/jal-meogeotseumnida.mp3" }
+      ]
+    }
+  ];
+
+  var currentIndex = 0;
+  var allFlipped = false;
+
+  var tabsEl = document.getElementById("tabs");
+  var gridEl = document.getElementById("cardsGrid");
+  var countEl = document.getElementById("cardCount");
+  var flipAllBtn = document.getElementById("flipAllBtn");
+  var shuffleBtn = document.getElementById("shuffleBtn");
+
+  function buildTabs(){
+    sections.forEach(function(section, idx){
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "tab-btn" + (idx === currentIndex ? " active" : "");
+      btn.textContent = section.label;
+      btn.setAttribute("data-index", idx);
+      btn.addEventListener("click", function(){
+        currentIndex = idx;
+        allFlipped = false;
+        updateTabsActive();
+        renderCards();
+      });
+      tabsEl.appendChild(btn);
+    });
+  }
+
+  function updateTabsActive(){
+    var buttons = tabsEl.querySelectorAll(".tab-btn");
+    buttons.forEach(function(btn, idx){
+      if(idx === currentIndex){
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    });
+  }
+
+  function renderCards(){
+    var section = sections[currentIndex];
+    gridEl.innerHTML = "";
+
+    section.cards.forEach(function(cardData){
+      var card = document.createElement("div");
+      card.className = "flip-card" + (cardData.audio ? " has-audio" : "");
+
+      var inner = document.createElement("div");
+      inner.className = "flip-card-inner";
+
+      var front = document.createElement("div");
+      front.className = "flip-card-front";
+      var enText = document.createElement("div");
+      enText.className = "card-en";
+      enText.textContent = cardData.en;
+      var hint = document.createElement("div");
+      hint.className = "hint";
+      hint.textContent = "TAP TO FLIP";
+      front.appendChild(enText);
+      front.appendChild(hint);
+
+      var back = document.createElement("div");
+      back.className = "flip-card-back";
+      var krText = document.createElement("div");
+      krText.className = "card-kr";
+      krText.textContent = cardData.kr;
+      var rrText = document.createElement("div");
+      rrText.className = "card-rr";
+      rrText.textContent = cardData.rr;
+      back.appendChild(krText);
+      back.appendChild(rrText);
+      if(cardData.audio){
+        back.appendChild(buildAudioButton(cardData.audio));
+      }
+
+      inner.appendChild(front);
+      inner.appendChild(back);
+      card.appendChild(inner);
+
+      card.addEventListener("click", function(){
+        card.classList.toggle("flipped");
+      });
+
+      gridEl.appendChild(card);
+    });
+
+    if(allFlipped){
+      gridEl.querySelectorAll(".flip-card").forEach(function(c){
+        c.classList.add("flipped");
+      });
+    }
+
+    countEl.textContent = section.cards.length + " cards in " + section.label;
+  }
+
+  function toggleFlipAll(){
+    allFlipped = !allFlipped;
+    var cards = gridEl.querySelectorAll(".flip-card");
+    cards.forEach(function(c){
+      if(allFlipped){
+        c.classList.add("flipped");
+      } else {
+        c.classList.remove("flipped");
+      }
+    });
+  }
+
+  function shuffleCurrent(){
+    var section = sections[currentIndex];
+    var arr = section.cards;
+    for(var i = arr.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = tmp;
+    }
+    allFlipped = false;
+    renderCards();
+  }
+
+  flipAllBtn.addEventListener("click", toggleFlipAll);
+  shuffleBtn.addEventListener("click", shuffleCurrent);
+
+  buildTabs();
+  renderCards();
+
+  // ---- Grammar corner ----
+  // To add a new grammar point later, just push another object onto this
+  // array in the same shape. Nothing else needs to change.
+  var grammarData = [
+    {
+      id: "go-sipeoyo",
+      grammar: "-고 싶어요",
+      english: "I want to...",
+      whenToUse: "Use this when you want to say that you want to do something.",
+      examples: [
+        { kr:"한국에 가고 싶어요.", rr:"Hanguk-e gago sipeoyo.", en:"I want to go to Korea.", audio:"assets/audio/grammar/gago-sipeoyo.mp3" },
+        { kr:"한국 음식을 먹고 싶어요.", rr:"Hanguk eumsigeul meokgo sipeoyo.", en:"I want to eat Korean food.", audio:"assets/audio/grammar/meokgo-sipeoyo.mp3" },
+        { kr:"오늘 쉬고 싶어요.", rr:"Oneul swigo sipeoyo.", en:"I want to rest today.", audio:"assets/audio/grammar/swigo-sipeoyo.mp3" }
+      ]
+    },
+    {
+      id: "a-eo-juseyo",
+      grammar: "-아/어 주세요",
+      english: "Please...",
+      whenToUse: "Use this when politely asking someone to do something for you.",
+      examples: [
+        { kr:"천천히 말해 주세요.", rr:"Cheoncheonhi malhae juseyo.", en:"Please speak slowly.", audio:"assets/audio/grammar/cheoncheonhi-malhae-juseyo.mp3" },
+        { kr:"물 좀 주세요.", rr:"Mul jom juseyo.", en:"Please give me some water.", audio:"assets/audio/grammar/mul-jom-juseyo.mp3" },
+        { kr:"사진 찍어 주세요.", rr:"Sajin jjigeo juseyo.", en:"Please take a picture.", audio:"assets/audio/grammar/sajin-jjigeo-juseyo.mp3" }
+      ]
+    },
+    {
+      id: "a-eodo-dwaeyo",
+      grammar: "-아/어도 돼요?",
+      english: "Can I...? / Is it okay if I...?",
+      whenToUse: "Use this when asking for permission.",
+      examples: [
+        { kr:"여기 앉아도 돼요?", rr:"Yeogi anjado dwaeyo?", en:"Can I sit here?", audio:"assets/audio/grammar/yeogi-anjado-dwaeyo.mp3" },
+        { kr:"사진 찍어도 돼요?", rr:"Sajin jjigeodo dwaeyo?", en:"Can I take a picture?", audio:"assets/audio/grammar/sajin-jjigeodo-dwaeyo.mp3" },
+        { kr:"지금 먹어도 돼요?", rr:"Jigeum meogeodo dwaeyo?", en:"Can I eat it now?", audio:"assets/audio/grammar/jigeum-meogeodo-dwaeyo.mp3" }
+      ]
+    },
+    {
+      id: "a-eoseo",
+      grammar: "-아/어서",
+      english: "Because / So",
+      whenToUse: "Use this to connect a reason with its result.",
+      examples: [
+        { kr:"피곤해서 일찍 잤어요.", rr:"Pigonhaeseo iljjik jasseoyo.", en:"I was tired, so I went to bed early.", audio:"assets/audio/grammar/pigonhaeseo-iljjik-jasseoyo.mp3" },
+        { kr:"비가 와서 집에 있었어요.", rr:"Biga waseo jibe isseosseoyo.", en:"It rained, so I stayed home.", audio:"assets/audio/grammar/biga-waseo-jibe-isseosseoyo.mp3" },
+        { kr:"맛있어서 많이 먹었어요.", rr:"Masisseoseo mani meogeosseoyo.", en:"It was delicious, so I ate a lot.", audio:"assets/audio/grammar/masisseoseo-mani-meogeosseoyo.mp3" }
+      ]
+    },
+    {
+      id: "eul-geoyeyo",
+      grammar: "-(으)ㄹ 거예요",
+      english: "Will / Going to",
+      whenToUse: "Use this to talk about a future plan or intention.",
+      examples: [
+        { kr:"주말에 친구를 만날 거예요.", rr:"Jumare chingureul mannal geoyeyo.", en:"I'm going to meet a friend this weekend.", audio:"assets/audio/grammar/jumare-chingureul-mannal-geoyeyo.mp3" },
+        { kr:"내일 한국어를 공부할 거예요.", rr:"Naeil hangugeoreul gongbuhal geoyeyo.", en:"I'm going to study Korean tomorrow.", audio:"assets/audio/grammar/naeil-hangugeoreul-gongbuhal-geoyeyo.mp3" },
+        { kr:"저녁에 운동할 거예요.", rr:"Jeonyeoge undonghal geoyeyo.", en:"I'm going to exercise this evening.", audio:"assets/audio/grammar/jeonyeoge-undonghal-geoyeyo.mp3" }
+      ]
+    },
+    {
+      id: "a-eo-bwasseoyo",
+      grammar: "-아/어 봤어요?",
+      english: "Have you tried...? / Have you ever...?",
+      whenToUse: "Use this to ask whether someone has tried or experienced something.",
+      examples: [
+        { kr:"한국 음식 먹어 봤어요?", rr:"Hanguk eumsik meogeo bwasseoyo?", en:"Have you tried Korean food?", audio:"assets/audio/grammar/hanguk-eumsik-meogeo-bwasseoyo.mp3" },
+        { kr:"한복 입어 봤어요?", rr:"Hanbok ibeo bwasseoyo?", en:"Have you tried wearing hanbok?", audio:"assets/audio/grammar/hanbok-ibeo-bwasseoyo.mp3" },
+        { kr:"제주도 가 봤어요?", rr:"Jejudo ga bwasseoyo?", en:"Have you been to Jeju Island?", audio:"assets/audio/grammar/jejudo-ga-bwasseoyo.mp3" }
+      ]
+    }
+  ];
+
+  // Audio files live in assets/audio/grammar/. Until a file is set on an
+  // example's "audio" field, the button renders disabled and never makes
+  // a network request, so a missing file can never cause an error.
+  function buildAudioButton(audioPath){
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "audio-btn";
+    btn.textContent = "🔊";
+    btn.setAttribute("aria-label", "Play audio");
+
+    if(!audioPath){
+      btn.disabled = true;
+      btn.title = "Audio coming soon";
+      return btn;
+    }
+
+    btn.title = "Play audio";
+    btn.addEventListener("click", function(e){
+      e.stopPropagation();
+      try{
+        var audio = new Audio(audioPath);
+        var playPromise = audio.play();
+        if(playPromise && typeof playPromise.catch === "function"){
+          playPromise.catch(function(){ /* playback not available yet */ });
+        }
+      } catch(e){ /* playback not available yet */ }
+    });
+    return btn;
+  }
+
+  function renderGrammar(){
+    var listEl = document.getElementById("grammarList");
+    listEl.innerHTML = "";
+
+    grammarData.forEach(function(item){
+      var card = document.createElement("article");
+      card.className = "grammar-card";
+
+      var badge = document.createElement("span");
+      badge.className = "grammar-badge";
+      badge.textContent = "GRAMMAR";
+
+      var title = document.createElement("h2");
+      title.className = "grammar-title";
+      title.textContent = item.grammar;
+
+      var english = document.createElement("p");
+      english.className = "grammar-english";
+      english.textContent = item.english;
+
+      var whenWrap = document.createElement("div");
+      whenWrap.className = "grammar-when";
+      var whenLabel = document.createElement("span");
+      whenLabel.className = "grammar-label";
+      whenLabel.textContent = "When to use";
+      var whenText = document.createElement("p");
+      whenText.textContent = item.whenToUse;
+      whenWrap.appendChild(whenLabel);
+      whenWrap.appendChild(whenText);
+
+      var examplesWrap = document.createElement("div");
+      examplesWrap.className = "grammar-examples";
+      var examplesLabel = document.createElement("span");
+      examplesLabel.className = "grammar-label";
+      examplesLabel.textContent = "Examples";
+      examplesWrap.appendChild(examplesLabel);
+
+      item.examples.forEach(function(ex){
+        var row = document.createElement("div");
+        row.className = "example-row";
+
+        var textWrap = document.createElement("div");
+        textWrap.className = "example-text";
+
+        var krEl = document.createElement("p");
+        krEl.className = "example-kr";
+        krEl.textContent = ex.kr;
+
+        var rrEl = document.createElement("p");
+        rrEl.className = "example-rr";
+        rrEl.textContent = ex.rr;
+
+        var enEl = document.createElement("p");
+        enEl.className = "example-en";
+        enEl.textContent = ex.en;
+
+        textWrap.appendChild(krEl);
+        textWrap.appendChild(rrEl);
+        textWrap.appendChild(enEl);
+
+        row.appendChild(textWrap);
+        row.appendChild(buildAudioButton(ex.audio));
+        examplesWrap.appendChild(row);
+      });
+
+      card.appendChild(badge);
+      card.appendChild(title);
+      card.appendChild(english);
+      card.appendChild(whenWrap);
+      card.appendChild(examplesWrap);
+      listEl.appendChild(card);
+    });
+  }
+
+  renderGrammar();
+
+  // ---- Reactions corner ----
+  // To add a new reaction later, just push another object onto this array.
+  // Once Clare records all reactions in one file, Claude Code will split it
+  // into assets/audio/reactions/<id>.mp3 files and set each "audio" field
+  // to that path — same pattern already used for the Grammar corner.
+  var reactionsData = [
+    { id:"heol", kr:"헐", rr:"heol", meaning:"No way! / Wow!", exampleKr:"헐, 진짜?", exampleEn:"No way, really?", audio:"assets/audio/reactions/heol.mp3" },
+    { id:"daebak", kr:"대박", rr:"daebak", meaning:"Amazing! / Wow!", exampleKr:"대박! 진짜 잘했어.", exampleEn:"Wow! You did really well.", audio:"assets/audio/reactions/daebak.mp3" },
+    { id:"jinjja", kr:"진짜?", rr:"jinjja?", meaning:"Really?", exampleKr:"진짜? 언제?", exampleEn:"Really? When?", audio:"assets/audio/reactions/jinjja.mp3" },
+    { id:"seolma", kr:"설마", rr:"seolma", meaning:"No way / Surely not", exampleKr:"설마 진짜야?", exampleEn:"No way, is that true?", audio:"assets/audio/reactions/seolma.mp3" },
+    { id:"maja", kr:"맞아", rr:"maja", meaning:"Exactly / That's right", exampleKr:"맞아, 나도 그렇게 생각해.", exampleEn:"Exactly, I think so too.", audio:"assets/audio/reactions/maja.mp3" },
+    { id:"geureoge", kr:"그러게", rr:"geureoge", meaning:"I know, right?", exampleKr:"그러게, 왜 이렇게 바쁘지?", exampleEn:"I know, right? Why are we so busy?", audio:"assets/audio/reactions/geureoge.mp3" },
+    { id:"eotteokhae", kr:"어떡해", rr:"eotteokhae", meaning:"Oh no / What should I do?", exampleKr:"어떡해, 늦었어!", exampleEn:"Oh no, I'm late!", audio:"assets/audio/reactions/eotteokhae.mp3" },
+    { id:"maldo-an-dwae", kr:"말도 안 돼", rr:"maldo an dwae", meaning:"No way / That makes no sense", exampleKr:"말도 안 돼! 진짜야?", exampleEn:"No way! Is that true?", audio:"assets/audio/reactions/maldo-an-dwae.mp3" },
+    { id:"geureol-su-itji", kr:"그럴 수 있지", rr:"geureol su itji", meaning:"That can happen / I understand", exampleKr:"괜찮아. 그럴 수 있지.", exampleEn:"It's okay. That can happen.", audio:"assets/audio/reactions/geureol-su-itji.mp3" },
+    { id:"dahaengida", kr:"다행이다", rr:"dahaengida", meaning:"What a relief", exampleKr:"안 다쳤어? 다행이다.", exampleEn:"You're not hurt? What a relief.", audio:"assets/audio/reactions/dahaengida.mp3" },
+    { id:"akkapda", kr:"아깝다", rr:"akkapda", meaning:"What a shame / So close", exampleKr:"거의 다 했는데. 아깝다!", exampleEn:"You almost did it. So close!", audio:"assets/audio/reactions/akkapda.mp3" },
+    { id:"bureopda", kr:"부럽다", rr:"bureopda", meaning:"I'm jealous / Lucky you", exampleKr:"여행 간다고? 부럽다!", exampleEn:"You're going on a trip? Lucky you!", audio:"assets/audio/reactions/bureopda.mp3" },
+    { id:"jangnan-aniya", kr:"장난 아니야", rr:"jangnan aniya", meaning:"No joke / Seriously impressive", exampleKr:"여기 사람 진짜 많아. 장난 아니야.", exampleEn:"There are so many people here. It's no joke.", audio:"assets/audio/reactions/jangnan-aniya.mp3" },
+    { id:"weniriya", kr:"웬일이야?", rr:"weniriya?", meaning:"What a surprise! / What brings this on?", exampleKr:"네가 먼저 전화하다니, 웬일이야?", exampleEn:"You called me first? What a surprise!", audio:"assets/audio/reactions/weniriya.mp3" },
+    { id:"eomeo", kr:"어머!", rr:"eomeo!", meaning:"Oh my! / Oh wow!", exampleKr:"어머! 너무 예쁘다.", exampleEn:"Oh my! It's so pretty.", audio:"assets/audio/reactions/eomeo.mp3" }
+  ];
+
+  function renderReactions(){
+    var listEl = document.getElementById("reactionsList");
+    listEl.innerHTML = "";
+
+    reactionsData.forEach(function(item){
+      var card = document.createElement("article");
+      card.className = "reaction-card";
+
+      var badge = document.createElement("span");
+      badge.className = "reaction-badge";
+      badge.textContent = "REACTION";
+
+      var krEl = document.createElement("p");
+      krEl.className = "reaction-kr";
+      krEl.textContent = item.kr;
+
+      var rrEl = document.createElement("p");
+      rrEl.className = "reaction-rr";
+      rrEl.textContent = item.rr;
+
+      var meaningEl = document.createElement("p");
+      meaningEl.className = "reaction-meaning";
+      meaningEl.textContent = item.meaning;
+
+      var examplesWrap = document.createElement("div");
+      examplesWrap.className = "grammar-examples";
+      var examplesLabel = document.createElement("span");
+      examplesLabel.className = "grammar-label";
+      examplesLabel.textContent = "Example";
+      examplesWrap.appendChild(examplesLabel);
+
+      var row = document.createElement("div");
+      row.className = "example-row";
+
+      var textWrap = document.createElement("div");
+      textWrap.className = "example-text";
+
+      var exKrEl = document.createElement("p");
+      exKrEl.className = "example-kr";
+      exKrEl.textContent = item.exampleKr;
+
+      var exEnEl = document.createElement("p");
+      exEnEl.className = "example-en";
+      exEnEl.textContent = item.exampleEn;
+
+      textWrap.appendChild(exKrEl);
+      textWrap.appendChild(exEnEl);
+
+      row.appendChild(textWrap);
+      row.appendChild(buildAudioButton(item.audio));
+      examplesWrap.appendChild(row);
+
+      card.appendChild(badge);
+      card.appendChild(krEl);
+      card.appendChild(rrEl);
+      card.appendChild(meaningEl);
+      card.appendChild(examplesWrap);
+      listEl.appendChild(card);
+    });
+  }
+
+  renderReactions();
+
+  // ---- Top-level corner switching (Flashcards / Grammar / future corners) ----
+  var cornerNavEl = document.getElementById("cornerNav");
+  var cornerButtons = cornerNavEl.querySelectorAll(".corner-btn");
+  var cornerSections = document.querySelectorAll(".corner");
+
+  cornerButtons.forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var target = btn.getAttribute("data-corner");
+
+      cornerButtons.forEach(function(b){
+        b.classList.toggle("active", b === btn);
+      });
+      cornerSections.forEach(function(sec){
+        sec.classList.toggle("active", sec.id === "corner-" + target);
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
