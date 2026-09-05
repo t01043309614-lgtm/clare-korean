@@ -450,6 +450,7 @@
       <button class="corner-btn active" type="button" data-corner="flashcards">Flashcards</button>
       <button class="corner-btn" type="button" data-corner="grammar">Grammar</button>
       <button class="corner-btn" type="button" data-corner="reactions">Reactions</button>
+      <button class="corner-btn" type="button" data-corner="situational">Situational Phrases</button>
     </nav>
 
     <section class="corner active" id="corner-flashcards">
@@ -472,6 +473,12 @@
     <section class="corner" id="corner-reactions">
       <p class="grammar-intro">Real reactions Koreans use every day.</p>
       <div class="reaction-list" id="reactionsList"></div>
+    </section>
+
+    <section class="corner" id="corner-situational">
+      <p class="grammar-intro">Real phrases for real situations — cafés, stores, taxis, directions, and restaurants.</p>
+      <nav class="tabs" id="situationalTabs"></nav>
+      <div class="grammar-list" id="situationalList"></div>
     </section>
 
     <footer>
@@ -923,6 +930,171 @@
   }
 
   renderReactions();
+
+  // ---- Situational Phrases corner ----
+  // Placeholder audio: each phrase's "audio" is null until Clare records the
+  // real files. buildAudioButton() already renders a disabled button with a
+  // "coming soon" tooltip for a falsy audio path, so no extra logic is
+  // needed here — once real files are added under
+  // assets/audio/situational/<category>/<slug>.mp3, just set the audio
+  // field on the matching phrase.
+  var situationalData = [
+    {
+      id: "cafe",
+      labelKr: "카페",
+      labelEn: "Cafe",
+      phrases: [
+        { kr:"아메리카노 한 잔 주세요.", rr:"Amerikano han jan juseyo.", en:"One americano, please.", audio:null },
+        { kr:"여기서 드실 거예요, 가져가실 거예요?", rr:"Yeogiseo deusil geoyeyo, gajyeogasil geoyeyo?", en:"For here or to go?", audio:null },
+        { kr:"사이즈는 어떻게 해드릴까요?", rr:"Saijeuneun eotteoke haedeurilkkayo?", en:"What size would you like?", audio:null },
+        { kr:"얼음 빼주세요.", rr:"Eoreum ppaejuseyo.", en:"No ice, please.", audio:null },
+        { kr:"포인트 적립 되나요?", rr:"Pointeu jeoklip doenayo?", en:"Can I earn points?", audio:null }
+      ]
+    },
+    {
+      id: "store",
+      labelKr: "편의점/마트",
+      labelEn: "Convenience Store / Mart",
+      phrases: [
+        { kr:"봉투 필요하세요?", rr:"Bongtu piryohaseyo?", en:"Do you need a bag?", audio:null },
+        { kr:"카드 되나요?", rr:"Kadeu doenayo?", en:"Do you take card?", audio:null },
+        { kr:"이거 얼마예요?", rr:"Igeo eolmayeyo?", en:"How much is this?", audio:null },
+        { kr:"영수증 필요 없어요.", rr:"Yeongsujeung pillyo eopseoyo.", en:"I don't need a receipt.", audio:null },
+        { kr:"데워 드릴까요?", rr:"Dewo deurilkkayo?", en:"Should I heat it up for you?", audio:null }
+      ]
+    },
+    {
+      id: "taxi",
+      labelKr: "택시",
+      labelEn: "Taxi",
+      phrases: [
+        { kr:"이 주소로 가주세요.", rr:"I jusoro gajuseyo.", en:"Please take me to this address.", audio:null },
+        { kr:"여기서 세워주세요.", rr:"Yeogiseo sewojuseyo.", en:"Please stop here.", audio:null },
+        { kr:"얼마나 걸려요?", rr:"Eolmana geollyeoyo?", en:"How long will it take?", audio:null },
+        { kr:"카드로 계산할게요.", rr:"Kadeuro gyesanhalgeyo.", en:"I'll pay by card.", audio:null },
+        { kr:"트렁크 좀 열어주세요.", rr:"Teureongkeu jom yeoreojuseyo.", en:"Please open the trunk.", audio:null }
+      ]
+    },
+    {
+      id: "directions",
+      labelKr: "길 묻기",
+      labelEn: "Asking Directions",
+      phrases: [
+        { kr:"여기가 어디예요?", rr:"Yeogiga eodiyeyo?", en:"Where am I?", audio:null },
+        { kr:"화장실이 어디예요?", rr:"Hwajangsiri eodiyeyo?", en:"Where is the bathroom?", audio:null },
+        { kr:"이 근처에 지하철역 있어요?", rr:"I geuncheoe jihacheollyeok isseoyo?", en:"Is there a subway station nearby?", audio:null },
+        { kr:"어떻게 가야 돼요?", rr:"Eotteoke gaya dwaeyo?", en:"How do I get there?", audio:null },
+        { kr:"걸어서 갈 수 있어요?", rr:"Georeoseo gal su isseoyo?", en:"Can I walk there?", audio:null }
+      ]
+    },
+    {
+      id: "restaurant",
+      labelKr: "식당",
+      labelEn: "Restaurant",
+      phrases: [
+        { kr:"여기요!", rr:"Yeogiyo!", en:"Excuse me! (calling a server)", audio:null },
+        { kr:"몇 분이세요?", rr:"Myeot buniseyo?", en:"How many people?", audio:null },
+        { kr:"추천 메뉴 있어요?", rr:"Chucheon menyu isseoyo?", en:"Do you have a recommended menu?", audio:null },
+        { kr:"반찬 더 주세요.", rr:"Banchan deo juseyo.", en:"More side dishes, please.", audio:null },
+        { kr:"계산해 주세요.", rr:"Gyesanhae juseyo.", en:"Check, please.", audio:null }
+      ]
+    }
+  ];
+
+  var situationalIndex = 0;
+  var situationalTabsEl = document.getElementById("situationalTabs");
+
+  function buildSituationalTabs(){
+    situationalData.forEach(function(category, idx){
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "tab-btn" + (idx === situationalIndex ? " active" : "");
+      btn.textContent = category.labelKr;
+      btn.setAttribute("data-index", idx);
+      btn.addEventListener("click", function(){
+        situationalIndex = idx;
+        updateSituationalTabsActive();
+        renderSituational();
+      });
+      situationalTabsEl.appendChild(btn);
+    });
+  }
+
+  function updateSituationalTabsActive(){
+    var buttons = situationalTabsEl.querySelectorAll(".tab-btn");
+    buttons.forEach(function(btn, idx){
+      if(idx === situationalIndex){
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    });
+  }
+
+  function renderSituational(){
+    var listEl = document.getElementById("situationalList");
+    listEl.innerHTML = "";
+
+    var category = situationalData[situationalIndex];
+    var card = document.createElement("article");
+    card.className = "grammar-card";
+
+    var badge = document.createElement("span");
+    badge.className = "grammar-badge";
+    badge.textContent = "SITUATIONAL";
+
+    var title = document.createElement("h2");
+    title.className = "grammar-title";
+    title.textContent = category.labelKr;
+
+    var english = document.createElement("p");
+    english.className = "grammar-english";
+    english.textContent = category.labelEn;
+
+    var examplesWrap = document.createElement("div");
+    examplesWrap.className = "grammar-examples";
+    var examplesLabel = document.createElement("span");
+    examplesLabel.className = "grammar-label";
+    examplesLabel.textContent = "Phrases";
+    examplesWrap.appendChild(examplesLabel);
+
+    category.phrases.forEach(function(phrase){
+      var row = document.createElement("div");
+      row.className = "example-row";
+
+      var textWrap = document.createElement("div");
+      textWrap.className = "example-text";
+
+      var krEl = document.createElement("p");
+      krEl.className = "example-kr";
+      krEl.textContent = phrase.kr;
+
+      var rrEl = document.createElement("p");
+      rrEl.className = "example-rr";
+      rrEl.textContent = phrase.rr;
+
+      var enEl = document.createElement("p");
+      enEl.className = "example-en";
+      enEl.textContent = phrase.en;
+
+      textWrap.appendChild(krEl);
+      textWrap.appendChild(rrEl);
+      textWrap.appendChild(enEl);
+
+      row.appendChild(textWrap);
+      row.appendChild(buildAudioButton(phrase.audio));
+      examplesWrap.appendChild(row);
+    });
+
+    card.appendChild(badge);
+    card.appendChild(title);
+    card.appendChild(english);
+    card.appendChild(examplesWrap);
+    listEl.appendChild(card);
+  }
+
+  buildSituationalTabs();
+  renderSituational();
 
   // ---- Top-level corner switching (Flashcards / Grammar / future corners) ----
   var cornerNavEl = document.getElementById("cornerNav");
