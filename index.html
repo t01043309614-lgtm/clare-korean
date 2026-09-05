@@ -932,23 +932,17 @@
   renderReactions();
 
   // ---- Situational Phrases corner ----
-  // Placeholder audio: each phrase's "audio" is null until Clare records the
-  // real files. buildAudioButton() already renders a disabled button with a
-  // "coming soon" tooltip for a falsy audio path, so no extra logic is
-  // needed here — once real files are added under
-  // assets/audio/situational/<category>/<slug>.mp3, just set the audio
-  // field on the matching phrase.
   var situationalData = [
     {
       id: "cafe",
       labelKr: "카페",
       labelEn: "Cafe",
       phrases: [
-        { kr:"아메리카노 한 잔 주세요.", rr:"Amerikano han jan juseyo.", en:"One americano, please.", audio:null },
-        { kr:"여기서 드실 거예요, 가져가실 거예요?", rr:"Yeogiseo deusil geoyeyo, gajyeogasil geoyeyo?", en:"For here or to go?", audio:null },
-        { kr:"사이즈는 어떻게 해드릴까요?", rr:"Saijeuneun eotteoke haedeurilkkayo?", en:"What size would you like?", audio:null },
-        { kr:"얼음 빼주세요.", rr:"Eoreum ppaejuseyo.", en:"No ice, please.", audio:null },
-        { kr:"포인트 적립 되나요?", rr:"Pointeu jeoklip doenayo?", en:"Can I earn points?", audio:null }
+        { kr:"아메리카노 한 잔 주세요.", rr:"Amerikano han jan juseyo.", en:"One americano, please.", audio:"assets/audio/situational/cafe/amerikano-han-jan-juseyo.mp3" },
+        { kr:"여기서 드실 거예요, 가져가실 거예요?", rr:"Yeogiseo deusil geoyeyo, gajyeogasil geoyeyo?", en:"For here or to go?", audio:"assets/audio/situational/cafe/yeogiseo-deusil-geoyeyo-gajyeogasil-geoyeyo.mp3" },
+        { kr:"사이즈는 어떻게 해드릴까요?", rr:"Saijeuneun eotteoke haedeurilkkayo?", en:"What size would you like?", audio:"assets/audio/situational/cafe/saijeuneun-eotteoke-haedeurilkkayo.mp3" },
+        { kr:"얼음 빼주세요.", rr:"Eoreum ppaejuseyo.", en:"No ice, please.", audio:"assets/audio/situational/cafe/eoreum-ppaejuseyo.mp3" },
+        { kr:"포인트 적립 되나요?", rr:"Pointeu jeoklip doenayo?", en:"Can I earn points?", audio:"assets/audio/situational/cafe/pointeu-jeoklip-doenayo.mp3" }
       ]
     },
     {
@@ -956,11 +950,11 @@
       labelKr: "편의점/마트",
       labelEn: "Convenience Store / Mart",
       phrases: [
-        { kr:"봉투 필요하세요?", rr:"Bongtu piryohaseyo?", en:"Do you need a bag?", audio:null },
-        { kr:"카드 되나요?", rr:"Kadeu doenayo?", en:"Do you take card?", audio:null },
-        { kr:"이거 얼마예요?", rr:"Igeo eolmayeyo?", en:"How much is this?", audio:null },
-        { kr:"영수증 필요 없어요.", rr:"Yeongsujeung pillyo eopseoyo.", en:"I don't need a receipt.", audio:null },
-        { kr:"데워 드릴까요?", rr:"Dewo deurilkkayo?", en:"Should I heat it up for you?", audio:null }
+        { kr:"봉투 필요하세요?", rr:"Bongtu piryohaseyo?", en:"Do you need a bag?", audio:"assets/audio/situational/store/bongtu-piryohaseyo.mp3" },
+        { kr:"카드 되나요?", rr:"Kadeu doenayo?", en:"Do you take card?", audio:"assets/audio/situational/store/kadeu-doenayo.mp3" },
+        { kr:"이거 얼마예요?", rr:"Igeo eolmayeyo?", en:"How much is this?", audio:"assets/audio/situational/store/igeo-eolmayeyo.mp3" },
+        { kr:"영수증 필요 없어요.", rr:"Yeongsujeung pillyo eopseoyo.", en:"I don't need a receipt.", audio:"assets/audio/situational/store/yeongsujeung-pillyo-eopseoyo.mp3" },
+        { kr:"데워 드릴까요?", rr:"Dewo deurilkkayo?", en:"Should I heat it up for you?", audio:"assets/audio/situational/store/dewo-deurilkkayo.mp3" }
       ]
     },
     {
@@ -968,11 +962,11 @@
       labelKr: "택시",
       labelEn: "Taxi",
       phrases: [
-        { kr:"이 주소로 가주세요.", rr:"I jusoro gajuseyo.", en:"Please take me to this address.", audio:null },
-        { kr:"여기서 세워주세요.", rr:"Yeogiseo sewojuseyo.", en:"Please stop here.", audio:null },
-        { kr:"얼마나 걸려요?", rr:"Eolmana geollyeoyo?", en:"How long will it take?", audio:null },
-        { kr:"카드로 계산할게요.", rr:"Kadeuro gyesanhalgeyo.", en:"I'll pay by card.", audio:null },
-        { kr:"트렁크 좀 열어주세요.", rr:"Teureongkeu jom yeoreojuseyo.", en:"Please open the trunk.", audio:null }
+        { kr:"이 주소로 가주세요.", rr:"I jusoro gajuseyo.", en:"Please take me to this address.", audio:"assets/audio/situational/taxi/i-jusoro-gajuseyo.mp3" },
+        { kr:"여기서 세워주세요.", rr:"Yeogiseo sewojuseyo.", en:"Please stop here.", audio:"assets/audio/situational/taxi/yeogiseo-sewojuseyo.mp3" },
+        { kr:"얼마나 걸려요?", rr:"Eolmana geollyeoyo?", en:"How long will it take?", audio:"assets/audio/situational/taxi/eolmana-geollyeoyo.mp3" },
+        { kr:"카드로 계산할게요.", rr:"Kadeuro gyesanhalgeyo.", en:"I'll pay by card.", audio:"assets/audio/situational/taxi/kadeuro-gyesanhalgeyo.mp3" },
+        { kr:"트렁크 좀 열어주세요.", rr:"Teureongkeu jom yeoreojuseyo.", en:"Please open the trunk.", audio:"assets/audio/situational/taxi/teureongkeu-jom-yeoreojuseyo.mp3" }
       ]
     },
     {
@@ -980,11 +974,11 @@
       labelKr: "길 묻기",
       labelEn: "Asking Directions",
       phrases: [
-        { kr:"여기가 어디예요?", rr:"Yeogiga eodiyeyo?", en:"Where am I?", audio:null },
-        { kr:"화장실이 어디예요?", rr:"Hwajangsiri eodiyeyo?", en:"Where is the bathroom?", audio:null },
-        { kr:"이 근처에 지하철역 있어요?", rr:"I geuncheoe jihacheollyeok isseoyo?", en:"Is there a subway station nearby?", audio:null },
-        { kr:"어떻게 가야 돼요?", rr:"Eotteoke gaya dwaeyo?", en:"How do I get there?", audio:null },
-        { kr:"걸어서 갈 수 있어요?", rr:"Georeoseo gal su isseoyo?", en:"Can I walk there?", audio:null }
+        { kr:"여기가 어디예요?", rr:"Yeogiga eodiyeyo?", en:"Where am I?", audio:"assets/audio/situational/directions/yeogiga-eodiyeyo.mp3" },
+        { kr:"화장실이 어디예요?", rr:"Hwajangsiri eodiyeyo?", en:"Where is the bathroom?", audio:"assets/audio/situational/directions/hwajangsiri-eodiyeyo.mp3" },
+        { kr:"이 근처에 지하철역 있어요?", rr:"I geuncheoe jihacheollyeok isseoyo?", en:"Is there a subway station nearby?", audio:"assets/audio/situational/directions/i-geuncheoe-jihacheollyeok-isseoyo.mp3" },
+        { kr:"어떻게 가야 돼요?", rr:"Eotteoke gaya dwaeyo?", en:"How do I get there?", audio:"assets/audio/situational/directions/eotteoke-gaya-dwaeyo.mp3" },
+        { kr:"걸어서 갈 수 있어요?", rr:"Georeoseo gal su isseoyo?", en:"Can I walk there?", audio:"assets/audio/situational/directions/georeoseo-gal-su-isseoyo.mp3" }
       ]
     },
     {
@@ -992,11 +986,11 @@
       labelKr: "식당",
       labelEn: "Restaurant",
       phrases: [
-        { kr:"여기요!", rr:"Yeogiyo!", en:"Excuse me! (calling a server)", audio:null },
-        { kr:"몇 분이세요?", rr:"Myeot buniseyo?", en:"How many people?", audio:null },
-        { kr:"추천 메뉴 있어요?", rr:"Chucheon menyu isseoyo?", en:"Do you have a recommended menu?", audio:null },
-        { kr:"반찬 더 주세요.", rr:"Banchan deo juseyo.", en:"More side dishes, please.", audio:null },
-        { kr:"계산해 주세요.", rr:"Gyesanhae juseyo.", en:"Check, please.", audio:null }
+        { kr:"여기요!", rr:"Yeogiyo!", en:"Excuse me! (calling a server)", audio:"assets/audio/situational/restaurant/yeogiyo.mp3" },
+        { kr:"몇 분이세요?", rr:"Myeot buniseyo?", en:"How many people?", audio:"assets/audio/situational/restaurant/myeot-buniseyo.mp3" },
+        { kr:"추천 메뉴 있어요?", rr:"Chucheon menyu isseoyo?", en:"Do you have a recommended menu?", audio:"assets/audio/situational/restaurant/chucheon-menyu-isseoyo.mp3" },
+        { kr:"반찬 더 주세요.", rr:"Banchan deo juseyo.", en:"More side dishes, please.", audio:"assets/audio/situational/restaurant/banchan-deo-juseyo.mp3" },
+        { kr:"계산해 주세요.", rr:"Gyesanhae juseyo.", en:"Check, please.", audio:"assets/audio/situational/restaurant/gyesanhae-juseyo.mp3" }
       ]
     }
   ];
