@@ -1,0 +1,87 @@
+상황별 실전 표현 (Situational Phrases) - 녹음 스크립트
+카테고리별로 하나의 m4a 파일에 순서대로 이어서 녹음해주세요.
+문장 사이에 1초 정도 쉬어주시면 자동 분리에 도움이 됩니다.
+
+===============================
+카페 (cafe)
+저장 위치: assets/audio/situational/cafe/
+===============================
+1. 아메리카노 한 잔 주세요.
+   파일명: amerikano-han-jan-juseyo.mp3
+2. 여기서 드실 거예요, 가져가실 거예요?
+   파일명: yeogiseo-deusil-geoyeyo-gajyeogasil-geoyeyo.mp3
+3. 사이즈는 어떻게 해드릴까요?
+   파일명: saijeuneun-eotteoke-haedeurilkkayo.mp3
+4. 얼음 빼주세요.
+   파일명: eoreum-ppaejuseyo.mp3
+5. 포인트 적립 되나요?
+   파일명: pointeu-jeoklip-doenayo.mp3
+
+===============================
+편의점/마트 (store)
+저장 위치: assets/audio/situational/store/
+===============================
+1. 봉투 필요하세요?
+   파일명: bongtu-piryohaseyo.mp3
+2. 카드 되나요?
+   파일명: kadeu-doenayo.mp3
+3. 이거 얼마예요?
+   파일명: igeo-eolmayeyo.mp3
+4. 영수증 필요 없어요.
+   파일명: yeongsujeung-pillyo-eopseoyo.mp3
+5. 데워 드릴까요?
+   파일명: dewo-deurilkkayo.mp3
+
+===============================
+택시 (taxi)
+저장 위치: assets/audio/situational/taxi/
+===============================
+1. 이 주소로 가주세요.
+   파일명: i-jusoro-gajuseyo.mp3
+2. 여기서 세워주세요.
+   파일명: yeogiseo-sewojuseyo.mp3
+3. 얼마나 걸려요?
+   파일명: eolmana-geollyeoyo.mp3
+4. 카드로 계산할게요.
+   파일명: kadeuro-gyesanhalgeyo.mp3
+5. 트렁크 좀 열어주세요.
+   파일명: teureongkeu-jom-yeoreojuseyo.mp3
+
+===============================
+길 묻기 (directions)
+저장 위치: assets/audio/situational/directions/
+===============================
+1. 여기가 어디예요?
+   파일명: yeogiga-eodiyeyo.mp3
+2. 화장실이 어디예요?
+   파일명: hwajangsiri-eodiyeyo.mp3
+3. 이 근처에 지하철역 있어요?
+   파일명: i-geuncheoe-jihacheollyeok-isseoyo.mp3
+4. 어떻게 가야 돼요?
+   파일명: eotteoke-gaya-dwaeyo.mp3
+5. 걸어서 갈 수 있어요?
+   파일명: georeoseo-gal-su-isseoyo.mp3
+
+===============================
+식당 (restaurant)
+저장 위치: assets/audio/situational/restaurant/
+===============================
+1. 여기요!
+   파일명: yeogiyo.mp3
+2. 몇 분이세요?
+   파일명: myeot-buniseyo.mp3
+3. 추천 메뉴 있어요?
+   파일명: chucheon-menyu-isseoyo.mp3
+4. 반찬 더 주세요.
+   파일명: banchan-deo-juseyo.mp3
+5. 계산해 주세요.
+   파일명: gyesanhae-juseyo.mp3
+
+===============================
+녹음 후
+===============================
+카테고리별로 녹음한 m4a 파일을 assets/audio/originals/ 폴더에 넣어주세요.
+(예: situational-cafe.m4a, situational-store.m4a, situational-taxi.m4a,
+     situational-directions.m4a, situational-restaurant.m4a)
+넣어주시면 무음 구간 기준으로 자동 분리해서 위 파일명으로 연결하고
+실제 재생 가능한 상태까지 마무리하겠습니다.
