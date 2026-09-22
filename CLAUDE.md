@@ -71,3 +71,9 @@ Hook → 한국어 → Romanization → English → Meaning → Example
 
 9. Clare가 브라우저에서 확인할 때 혼동하지 않도록
    작업 완료 후 실제 수정한 index.html의 경로를 알려준다.
+
+## 배포
+
+- 사이트 주소: https://clare-korean-flashcards.netlify.app/
+- Netlify가 GitHub 저장소(origin/main)에 연결되어 있어서, 커밋 후 `git push origin main`을 하면 자동으로 재배포된다.
+- "재배포" 요청 시: 커밋 → push → 위 주소에서 새 index.html과 새 음성 파일이 실제로 반영됐는지 확인까지 한다.
