@@ -436,6 +436,91 @@
     font-weight:600;
     font-size:0.95rem;
   }
+
+  .verb-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .verb-emoji{
+    margin-right:6px;
+  }
+
+  .quiz-score{
+    text-align:center;
+    color:var(--mint-dark);
+    font-weight:700;
+    font-size:0.95rem;
+    margin:0 0 14px;
+  }
+  .quiz-reset{
+    display:flex;
+    justify-content:center;
+    margin-top:20px;
+  }
+  .quiz-listen{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:4px 0 14px;
+    color:var(--muted);
+    font-size:0.85rem;
+  }
+  .quiz-question{
+    margin:0 0 14px;
+    font-size:clamp(1rem,3.8vw,1.1rem);
+    font-weight:700;
+    color:var(--ink);
+    line-height:1.4;
+  }
+  .quiz-options{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .quiz-option{
+    text-align:left;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--ink);
+    padding:11px 14px;
+    border-radius:12px;
+    font-size:0.92rem;
+    font-weight:600;
+    font-family:inherit;
+    cursor:pointer;
+    transition:background 0.15s ease,border-color 0.15s ease;
+  }
+  .quiz-option:hover:not(:disabled){
+    border-color:var(--mint);
+    background:var(--mint-soft);
+  }
+  .quiz-option:disabled{
+    cursor:default;
+  }
+  .quiz-option.correct{
+    background:var(--mint);
+    border-color:var(--mint);
+    color:#fff;
+  }
+  .quiz-option.wrong{
+    background:#FBEAE6;
+    border-color:#E0917F;
+    color:#A4452F;
+  }
+  .quiz-feedback{
+    margin:14px 0 0;
+    font-weight:700;
+    font-size:0.9rem;
+  }
+  .quiz-feedback.is-correct{ color:var(--mint-dark); }
+  .quiz-feedback.is-wrong{ color:#A4452F; }
+  .quiz-answer{
+    margin-top:10px;
+    padding-top:12px;
+    border-top:1px solid var(--border);
+  }
 </style>
 </head>
 <body>
@@ -451,6 +536,8 @@
       <button class="corner-btn" type="button" data-corner="grammar">Grammar</button>
       <button class="corner-btn" type="button" data-corner="reactions">Reactions</button>
       <button class="corner-btn" type="button" data-corner="situational">Situational Phrases</button>
+      <button class="corner-btn" type="button" data-corner="wear">Wearing Verbs</button>
+      <button class="corner-btn" type="button" data-corner="quiz">Listening Quiz</button>
     </nav>
 
     <section class="corner active" id="corner-flashcards">
@@ -479,6 +566,18 @@
       <p class="grammar-intro">Real phrases for real situations — cafés, stores, taxis, directions, and restaurants.</p>
       <nav class="tabs" id="situationalTabs"></nav>
       <div class="grammar-list" id="situationalList"></div>
+    </section>
+
+    <section class="corner" id="corner-wear">
+      <p class="grammar-intro">옷/액세서리 착용 동사 — In Korean, the verb for "wear" changes with what you put on.</p>
+      <div class="grammar-list" id="wearList"></div>
+    </section>
+
+    <section class="corner" id="corner-quiz">
+      <p class="grammar-intro">리스닝 미니 퀴즈 — Listen to Clare and pick the right answer.</p>
+      <p class="quiz-score" id="quizScore"></p>
+      <div class="grammar-list" id="quizList"></div>
+      <div class="quiz-reset"><button class="ctrl-btn" type="button" id="quizResetBtn">Try again</button></div>
     </section>
 
     <footer>
@@ -1089,6 +1188,239 @@
 
   buildSituationalTabs();
   renderSituational();
+
+  // ---- Wearing Verbs corner ----
+  // Each verb has one audio clip with both example sentences.
+  var wearData = [
+    { id:"ipda", emoji:"👕", kr:"입다", rr:"ipda", en:"to wear (clothes)", audio:"assets/audio/wear/ipda.mp3",
+      examples: [
+        { kr:"티셔츠를 입어요.", rr:"Tisyeocheureul ibeoyo.", en:"I'm wearing a T-shirt." },
+        { kr:"오늘 뭐 입을까요?", rr:"Oneul mwo ibeulkkayo?", en:"What should I wear today?" }
+      ] },
+    { id:"sinda", emoji:"👟", kr:"신다", rr:"sinda", en:"to wear (shoes, socks)", audio:"assets/audio/wear/sinda.mp3",
+      examples: [
+        { kr:"신발을 신어요.", rr:"Sinbareul sineoyo.", en:"I put on my shoes." },
+        { kr:"운동화를 신고 나갔어요.", rr:"Undonghwareul singo nagasseoyo.", en:"I put on my sneakers and went out." }
+      ] },
+    { id:"sseuda", emoji:"🧢", kr:"쓰다", rr:"sseuda", en:"to wear (hats, glasses)", audio:"assets/audio/wear/sseuda.mp3",
+      examples: [
+        { kr:"모자를 써요.", rr:"Mojareul sseoyo.", en:"I wear a hat." },
+        { kr:"안경을 쓰고 책을 읽어요.", rr:"Angyeongeul sseugo chaegeul ilgeoyo.", en:"I put on my glasses and read a book." }
+      ] },
+    { id:"kkida", emoji:"💍", kr:"끼다", rr:"kkida", en:"to wear (rings, gloves)", audio:"assets/audio/wear/kkida.mp3",
+      examples: [
+        { kr:"반지를 껴요.", rr:"Banjireul kkyeoyo.", en:"I wear a ring." },
+        { kr:"겨울엔 장갑을 껴요.", rr:"Gyeouren janggabeul kkyeoyo.", en:"I wear gloves in winter." }
+      ] },
+    { id:"chada", emoji:"⌚", kr:"차다", rr:"chada", en:"to wear (a watch)", audio:"assets/audio/wear/chada.mp3",
+      examples: [
+        { kr:"시계를 차요.", rr:"Sigyereul chayo.", en:"I wear a watch." },
+        { kr:"새 시계를 찼어요.", rr:"Sae sigyereul chasseoyo.", en:"I put on a new watch." }
+      ] },
+    { id:"meda", emoji:"🎒", kr:"메다", rr:"meda", en:"to wear (a bag on your shoulder or back)", audio:"assets/audio/wear/meda.mp3",
+      examples: [
+        { kr:"가방을 메요.", rr:"Gabangeul meyo.", en:"I carry a bag on my shoulder." },
+        { kr:"배낭을 메고 여행해요.", rr:"Baenangeul mego yeohaenghaeyo.", en:"I travel with a backpack on." }
+      ] }
+  ];
+
+  function renderWear(){
+    var listEl = document.getElementById("wearList");
+    listEl.innerHTML = "";
+
+    wearData.forEach(function(item){
+      var card = document.createElement("article");
+      card.className = "grammar-card";
+
+      var badge = document.createElement("span");
+      badge.className = "grammar-badge";
+      badge.textContent = "WEAR VERB";
+
+      var head = document.createElement("div");
+      head.className = "verb-head";
+      var headText = document.createElement("div");
+
+      var title = document.createElement("h2");
+      title.className = "grammar-title";
+      var emojiEl = document.createElement("span");
+      emojiEl.className = "verb-emoji";
+      emojiEl.textContent = item.emoji;
+      title.appendChild(emojiEl);
+      title.appendChild(document.createTextNode(item.kr));
+
+      var rrEl = document.createElement("p");
+      rrEl.className = "reaction-rr";
+      rrEl.textContent = item.rr;
+
+      var english = document.createElement("p");
+      english.className = "grammar-english";
+      english.textContent = item.en;
+
+      headText.appendChild(title);
+      headText.appendChild(rrEl);
+      headText.appendChild(english);
+      head.appendChild(headText);
+      head.appendChild(buildAudioButton(item.audio));
+
+      var examplesWrap = document.createElement("div");
+      examplesWrap.className = "grammar-examples";
+      var examplesLabel = document.createElement("span");
+      examplesLabel.className = "grammar-label";
+      examplesLabel.textContent = "Examples";
+      examplesWrap.appendChild(examplesLabel);
+
+      item.examples.forEach(function(ex){
+        var row = document.createElement("div");
+        row.className = "example-row";
+
+        var textWrap = document.createElement("div");
+        textWrap.className = "example-text";
+
+        var krEl = document.createElement("p");
+        krEl.className = "example-kr";
+        krEl.textContent = ex.kr;
+
+        var exRrEl = document.createElement("p");
+        exRrEl.className = "example-rr";
+        exRrEl.textContent = ex.rr;
+
+        var enEl = document.createElement("p");
+        enEl.className = "example-en";
+        enEl.textContent = ex.en;
+
+        textWrap.appendChild(krEl);
+        textWrap.appendChild(exRrEl);
+        textWrap.appendChild(enEl);
+        row.appendChild(textWrap);
+        examplesWrap.appendChild(row);
+      });
+
+      card.appendChild(badge);
+      card.appendChild(head);
+      card.appendChild(examplesWrap);
+      listEl.appendChild(card);
+    });
+  }
+
+  renderWear();
+
+  // ---- Listening Mini Quiz corner ----
+  var quizData = [
+    { question:"What did the person put on before going out?", options:["모자","신발","장갑"], answer:1,
+      kr:"신발을 신고 나갔어요.", rr:"Sinbareul singo nagasseoyo.", en:"I put on my shoes and went out.",
+      audio:"assets/audio/quiz/q1-sinbareul-singo-nagasseoyo.mp3" },
+    { question:"What is the speaker asking for?", options:["메뉴","계산서","물"], answer:2,
+      kr:"저기요, 물 좀 주세요.", rr:"Jeogiyo, mul jom juseyo.", en:"Excuse me, some water, please.",
+      audio:"assets/audio/quiz/q2-jeogiyo-mul-jom-juseyo.mp3" },
+    { question:"What is the speaker doing?", options:["Ordering food","Giving taxi directions","Asking for a bag"], answer:1,
+      kr:"이 주소로 가주세요.", rr:"I jusoro gajuseyo.", en:"Please take me to this address.",
+      audio:"assets/audio/quiz/q3-i-jusoro-gajuseyo.mp3" },
+    { question:"What is the speaker looking for?", options:["Subway station","Bathroom","Cafe"], answer:1,
+      kr:"화장실이 어디예요?", rr:"Hwajangsiri eodiyeyo?", en:"Where is the bathroom?",
+      audio:"assets/audio/quiz/q4-hwajangsiri-eodiyeyo.mp3" },
+    { question:"What is being offered?", options:["A receipt","A bag","A discount"], answer:1,
+      kr:"봉투 필요하세요?", rr:"Bongtu piryohaseyo?", en:"Do you need a bag?",
+      audio:"assets/audio/quiz/q5-bongtu-piryohaseyo.mp3" }
+  ];
+
+  var quizScoreEl = document.getElementById("quizScore");
+  var quizCorrect = 0;
+  var quizAnswered = 0;
+
+  function updateQuizScore(){
+    quizScoreEl.textContent = "Score: " + quizCorrect + " / " + quizData.length +
+      (quizAnswered === quizData.length ? " — nice work!" : "");
+  }
+
+  function renderQuiz(){
+    var listEl = document.getElementById("quizList");
+    listEl.innerHTML = "";
+    quizCorrect = 0;
+    quizAnswered = 0;
+    updateQuizScore();
+
+    quizData.forEach(function(item, qIdx){
+      var card = document.createElement("article");
+      card.className = "grammar-card";
+
+      var badge = document.createElement("span");
+      badge.className = "grammar-badge";
+      badge.textContent = "QUESTION " + (qIdx + 1);
+
+      var listen = document.createElement("div");
+      listen.className = "quiz-listen";
+      listen.appendChild(buildAudioButton(item.audio));
+      var listenText = document.createElement("span");
+      listenText.textContent = "Listen first";
+      listen.appendChild(listenText);
+
+      var questionEl = document.createElement("p");
+      questionEl.className = "quiz-question";
+      questionEl.textContent = item.question;
+
+      var optionsWrap = document.createElement("div");
+      optionsWrap.className = "quiz-options";
+
+      var feedback = document.createElement("p");
+      feedback.className = "quiz-feedback";
+      feedback.hidden = true;
+
+      var answerWrap = document.createElement("div");
+      answerWrap.className = "quiz-answer";
+      answerWrap.hidden = true;
+      var krEl = document.createElement("p");
+      krEl.className = "example-kr";
+      krEl.textContent = item.kr;
+      var rrEl = document.createElement("p");
+      rrEl.className = "example-rr";
+      rrEl.textContent = item.rr;
+      var enEl = document.createElement("p");
+      enEl.className = "example-en";
+      enEl.textContent = item.en;
+      answerWrap.appendChild(krEl);
+      answerWrap.appendChild(rrEl);
+      answerWrap.appendChild(enEl);
+
+      var optionButtons = [];
+      item.options.forEach(function(opt, oIdx){
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "quiz-option";
+        btn.textContent = String.fromCharCode(65 + oIdx) + ") " + opt;
+        btn.addEventListener("click", function(){
+          var isCorrect = oIdx === item.answer;
+          optionButtons.forEach(function(b, i){
+            b.disabled = true;
+            if(i === item.answer){ b.classList.add("correct"); }
+          });
+          if(!isCorrect){ btn.classList.add("wrong"); }
+
+          feedback.hidden = false;
+          feedback.className = "quiz-feedback " + (isCorrect ? "is-correct" : "is-wrong");
+          feedback.textContent = isCorrect ? "Correct! 정답이에요!" :
+            "Not quite. The answer is " + String.fromCharCode(65 + item.answer) + ".";
+          answerWrap.hidden = false;
+
+          quizAnswered++;
+          if(isCorrect){ quizCorrect++; }
+          updateQuizScore();
+        });
+        optionButtons.push(btn);
+        optionsWrap.appendChild(btn);
+      });
+
+      card.appendChild(badge);
+      card.appendChild(listen);
+      card.appendChild(questionEl);
+      card.appendChild(optionsWrap);
+      card.appendChild(feedback);
+      card.appendChild(answerWrap);
+      listEl.appendChild(card);
+    });
+  }
+
+  document.getElementById("quizResetBtn").addEventListener("click", renderQuiz);
+  renderQuiz();
 
   // ---- Top-level corner switching (Flashcards / Grammar / future corners) ----
   var cornerNavEl = document.getElementById("cornerNav");
