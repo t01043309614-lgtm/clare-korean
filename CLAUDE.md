@@ -72,6 +72,11 @@ Hook → 한국어 → Romanization → English → Meaning → Example
 9. Clare가 브라우저에서 확인할 때 혼동하지 않도록
    작업 완료 후 실제 수정한 index.html의 경로를 알려준다.
 
+## 검색 노출 (SEO)
+
+- 카드 내용은 검색엔진이 읽을 수 있도록 index.html 안에 미리 글자로 들어가 있다(`<!-- prerender:ID -->` 구간).
+- 카드/데이터를 추가하거나 수정한 뒤에는 커밋 전에 반드시 `python tools/prerender.py`를 실행해서 이 구간을 갱신한다.
+
 ## 배포
 
 - 사이트 주소: https://clare-korean-flashcards.netlify.app/
