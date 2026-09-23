@@ -447,6 +447,63 @@
     margin-right:6px;
   }
 
+  .pairs-heading{
+    text-align:center;
+    margin:26px 0 0;
+    font-size:clamp(1.2rem,4.5vw,1.5rem);
+    font-weight:700;
+    color:var(--ink);
+  }
+  .pairs-intro{
+    margin-top:8px;
+  }
+  .pairs-group{
+    max-width:720px;
+    margin:0 auto 34px;
+  }
+  .pairs-group-title{
+    margin:0 0 14px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--mint);
+    font-size:clamp(1rem,3.8vw,1.15rem);
+    font-weight:700;
+    color:var(--mint-dark);
+  }
+  .pairs-corner{
+    margin-bottom:26px;
+  }
+  .pairs-corner-title{
+    margin:0 0 12px;
+    font-size:clamp(0.98rem,3.6vw,1.08rem);
+    font-weight:700;
+    color:var(--ink);
+    word-break:keep-all;
+  }
+  .pair-top{
+    background:var(--mint-soft);
+    border-radius:12px;
+    padding:10px 14px;
+    margin-bottom:14px;
+  }
+  .pair-top-kr{
+    margin:0;
+    font-weight:700;
+    font-size:clamp(0.98rem,3.8vw,1.1rem);
+    color:var(--ink);
+    word-break:keep-all;
+  }
+  .pair-top-rr{
+    margin:3px 0 0;
+    font-size:clamp(0.72rem,2.4vw,0.82rem);
+    color:var(--mint-dark);
+    font-style:italic;
+  }
+  .pair-top-en{
+    margin:3px 0 0;
+    font-size:clamp(0.8rem,2.8vw,0.9rem);
+    color:var(--muted);
+  }
+
   .quiz-score{
     text-align:center;
     color:var(--mint-dark);
@@ -536,7 +593,7 @@
       <button class="corner-btn" type="button" data-corner="grammar">Grammar</button>
       <button class="corner-btn" type="button" data-corner="reactions">Reactions</button>
       <button class="corner-btn" type="button" data-corner="situational">Situational Phrases</button>
-      <button class="corner-btn" type="button" data-corner="wear">Wearing Verbs</button>
+      <button class="corner-btn" type="button" data-corner="pairs">Learn Them as Pairs</button>
       <button class="corner-btn" type="button" data-corner="quiz">Listening Quiz</button>
     </nav>
 
@@ -568,9 +625,10 @@
       <div class="grammar-list" id="situationalList"></div>
     </section>
 
-    <section class="corner" id="corner-wear">
-      <p class="grammar-intro">옷/액세서리 착용 동사 — In Korean, the verb for "wear" changes with what you put on.</p>
-      <div class="grammar-list" id="wearList"></div>
+    <section class="corner" id="corner-pairs">
+      <h2 class="pairs-heading">Learn Them as Pairs</h2>
+      <p class="grammar-intro pairs-intro">Don't study only the verb. Study the noun + verb together.</p>
+      <div id="pairsGroups"></div>
     </section>
 
     <section class="corner" id="corner-quiz">
@@ -1189,120 +1247,235 @@
   buildSituationalTabs();
   renderSituational();
 
-  // ---- Wearing Verbs corner ----
-  // Each verb has one audio clip with both example sentences.
-  var wearData = [
-    { id:"ipda", emoji:"👕", kr:"입다", rr:"ipda", en:"to wear (clothes)", audio:"assets/audio/wear/ipda.mp3",
-      examples: [
-        { kr:"티셔츠를 입어요.", rr:"Tisyeocheureul ibeoyo.", en:"I'm wearing a T-shirt." },
-        { kr:"오늘 뭐 입을까요?", rr:"Oneul mwo ibeulkkayo?", en:"What should I wear today?" }
-      ] },
-    { id:"sinda", emoji:"👟", kr:"신다", rr:"sinda", en:"to wear (shoes, socks)", audio:"assets/audio/wear/sinda.mp3",
-      examples: [
-        { kr:"신발을 신어요.", rr:"Sinbareul sineoyo.", en:"I put on my shoes." },
-        { kr:"운동화를 신고 나갔어요.", rr:"Undonghwareul singo nagasseoyo.", en:"I put on my sneakers and went out." }
-      ] },
-    { id:"sseuda", emoji:"🧢", kr:"쓰다", rr:"sseuda", en:"to wear (hats, glasses)", audio:"assets/audio/wear/sseuda.mp3",
-      examples: [
-        { kr:"모자를 써요.", rr:"Mojareul sseoyo.", en:"I wear a hat." },
-        { kr:"안경을 쓰고 책을 읽어요.", rr:"Angyeongeul sseugo chaegeul ilgeoyo.", en:"I put on my glasses and read a book." }
-      ] },
-    { id:"kkida", emoji:"💍", kr:"끼다", rr:"kkida", en:"to wear (rings, gloves)", audio:"assets/audio/wear/kkida.mp3",
-      examples: [
-        { kr:"반지를 껴요.", rr:"Banjireul kkyeoyo.", en:"I wear a ring." },
-        { kr:"겨울엔 장갑을 껴요.", rr:"Gyeouren janggabeul kkyeoyo.", en:"I wear gloves in winter." }
-      ] },
-    { id:"chada", emoji:"⌚", kr:"차다", rr:"chada", en:"to wear (a watch)", audio:"assets/audio/wear/chada.mp3",
-      examples: [
-        { kr:"시계를 차요.", rr:"Sigyereul chayo.", en:"I wear a watch." },
-        { kr:"새 시계를 찼어요.", rr:"Sae sigyereul chasseoyo.", en:"I put on a new watch." }
-      ] },
-    { id:"meda", emoji:"🎒", kr:"메다", rr:"meda", en:"to wear (a bag on your shoulder or back)", audio:"assets/audio/wear/meda.mp3",
-      examples: [
-        { kr:"가방을 메요.", rr:"Gabangeul meyo.", en:"I carry a bag on my shoulder." },
-        { kr:"배낭을 메고 여행해요.", rr:"Baenangeul mego yeohaenghaeyo.", en:"I travel with a backpack on." }
-      ] }
+  // ---- Learn Them as Pairs corner ----
+  // To add a new verb corner, add an object to the "corners" array of a group.
+  // Card fields: emoji, kr, rr, en, audio (optional), pair (optional: {kr, rr, en}),
+  // meaning (optional), examples: [{ kr, rr (optional), en, audio (optional) }].
+  var pairsData = [
+    {
+      group: "One Word, Many Meanings",
+      corners: [
+        {
+          title: "먹다: One Korean Verb, Many Meanings",
+          badge: "먹다",
+          cards: [
+            { emoji:"🍚", kr:"밥을 먹다", rr:"babeul meokda", en:"eat a meal", audio:"assets/audio/meokda/babeul-meokda.mp3",
+              meaning:"The basic meaning: eating food.",
+              examples: [
+                { kr:"점심 먹었어요?", en:"Did you have lunch?", audio:"assets/audio/meokda/jeomsim-meogeosseoyo.mp3" }
+              ] },
+            { emoji:"💊", kr:"약을 먹다", rr:"yageul meokda", en:"take medicine", audio:"assets/audio/meokda/yageul-meokda.mp3",
+              meaning:"Koreans “eat” medicine, even liquid medicine.",
+              examples: [
+                { kr:"하루에 세 번 약을 먹어요", en:"I take medicine three times a day", audio:"assets/audio/meokda/harue-se-beon-yageul-meogeoyo.mp3" }
+              ] },
+            { emoji:"🎂", kr:"나이를 먹다", rr:"naireul meokda", en:"get older", audio:"assets/audio/meokda/naireul-meokda.mp3",
+              meaning:"Every birthday, you “eat” one more year.",
+              examples: [
+                { kr:"한 살 더 먹었어요", en:"I turned one year older", audio:"assets/audio/meokda/han-sal-deo-meogeosseoyo.mp3" }
+              ] },
+            { emoji:"❤️", kr:"마음을 먹다", rr:"maeumeul meokda", en:"make up your mind", audio:"assets/audio/meokda/maeumeul-meokda.mp3",
+              meaning:"“Eating” your heart means deciding firmly.",
+              examples: [
+                { kr:"한국어 공부하기로 마음먹었어요", en:"I made up my mind to study Korean", audio:"assets/audio/meokda/hangugeo-gongbuhagiro-maeummeogeosseoyo.mp3" }
+              ] }
+          ]
+        }
+      ]
+    },
+    {
+      group: "One Meaning, Many Words",
+      corners: [
+        {
+          title: "Wear: One English Word, 6 Korean Verbs",
+          badge: "WEAR VERB",
+          // Each verb has one audio clip with both example sentences.
+          cards: [
+            { emoji:"👕", kr:"입다", rr:"ipda", en:"to wear (clothes)", audio:"assets/audio/wear/ipda.mp3",
+              pair: { kr:"옷을 입다", rr:"Oseul ipda", en:"to wear clothes" },
+              examples: [
+                { kr:"티셔츠를 입어요.", rr:"Tisyeocheureul ibeoyo.", en:"I'm wearing a T-shirt." },
+                { kr:"오늘 뭐 입을까요?", rr:"Oneul mwo ibeulkkayo?", en:"What should I wear today?" }
+              ] },
+            { emoji:"👟", kr:"신다", rr:"sinda", en:"to wear (shoes, socks)", audio:"assets/audio/wear/sinda.mp3",
+              pair: { kr:"신발을 신다", rr:"Sinbareul sinda", en:"to wear shoes" },
+              examples: [
+                { kr:"신발을 신어요.", rr:"Sinbareul sineoyo.", en:"I put on my shoes." },
+                { kr:"운동화를 신고 나갔어요.", rr:"Undonghwareul singo nagasseoyo.", en:"I put on my sneakers and went out." }
+              ] },
+            { emoji:"🧢", kr:"쓰다", rr:"sseuda", en:"to wear (hats, glasses)", audio:"assets/audio/wear/sseuda.mp3",
+              pair: { kr:"모자를 쓰다 / 안경을 쓰다", rr:"Mojareul sseuda / Angyeong-eul sseuda", en:"to wear a hat / glasses" },
+              examples: [
+                { kr:"모자를 써요.", rr:"Mojareul sseoyo.", en:"I wear a hat." },
+                { kr:"안경을 쓰고 책을 읽어요.", rr:"Angyeongeul sseugo chaegeul ilgeoyo.", en:"I put on my glasses and read a book." }
+              ] },
+            { emoji:"💍", kr:"끼다", rr:"kkida", en:"to wear (rings, gloves)", audio:"assets/audio/wear/kkida.mp3",
+              pair: { kr:"반지를 끼다", rr:"Banjireul kkida", en:"to wear a ring" },
+              examples: [
+                { kr:"반지를 껴요.", rr:"Banjireul kkyeoyo.", en:"I wear a ring." },
+                { kr:"겨울엔 장갑을 껴요.", rr:"Gyeouren janggabeul kkyeoyo.", en:"I wear gloves in winter." }
+              ] },
+            { emoji:"⌚", kr:"차다", rr:"chada", en:"to wear (a watch)", audio:"assets/audio/wear/chada.mp3",
+              pair: { kr:"시계를 차다", rr:"Sigyereul chada", en:"to wear a watch" },
+              examples: [
+                { kr:"시계를 차요.", rr:"Sigyereul chayo.", en:"I wear a watch." },
+                { kr:"새 시계를 찼어요.", rr:"Sae sigyereul chasseoyo.", en:"I put on a new watch." }
+              ] },
+            { emoji:"🎒", kr:"메다", rr:"meda", en:"to wear (a bag on your shoulder or back)", audio:"assets/audio/wear/meda.mp3",
+              pair: { kr:"가방을 메다", rr:"Gabang-eul meda", en:"to wear a bag" },
+              examples: [
+                { kr:"가방을 메요.", rr:"Gabangeul meyo.", en:"I carry a bag on my shoulder." },
+                { kr:"배낭을 메고 여행해요.", rr:"Baenangeul mego yeohaenghaeyo.", en:"I travel with a backpack on." }
+              ] }
+          ]
+        }
+      ]
+    }
   ];
 
-  function renderWear(){
-    var listEl = document.getElementById("wearList");
-    listEl.innerHTML = "";
+  function buildPairCard(item, badgeText){
+    var card = document.createElement("article");
+    card.className = "grammar-card";
 
-    wearData.forEach(function(item){
-      var card = document.createElement("article");
-      card.className = "grammar-card";
+    var badge = document.createElement("span");
+    badge.className = "grammar-badge";
+    badge.textContent = badgeText;
+    card.appendChild(badge);
 
-      var badge = document.createElement("span");
-      badge.className = "grammar-badge";
-      badge.textContent = "WEAR VERB";
+    if(item.pair){
+      var pairEl = document.createElement("div");
+      pairEl.className = "pair-top";
+      var pairKr = document.createElement("p");
+      pairKr.className = "pair-top-kr";
+      pairKr.textContent = item.pair.kr;
+      var pairRr = document.createElement("p");
+      pairRr.className = "pair-top-rr";
+      pairRr.textContent = item.pair.rr;
+      var pairEn = document.createElement("p");
+      pairEn.className = "pair-top-en";
+      pairEn.textContent = item.pair.en;
+      pairEl.appendChild(pairKr);
+      pairEl.appendChild(pairRr);
+      pairEl.appendChild(pairEn);
+      card.appendChild(pairEl);
+    }
 
-      var head = document.createElement("div");
-      head.className = "verb-head";
-      var headText = document.createElement("div");
+    var head = document.createElement("div");
+    head.className = "verb-head";
+    var headText = document.createElement("div");
 
-      var title = document.createElement("h2");
-      title.className = "grammar-title";
-      var emojiEl = document.createElement("span");
-      emojiEl.className = "verb-emoji";
-      emojiEl.textContent = item.emoji;
-      title.appendChild(emojiEl);
-      title.appendChild(document.createTextNode(item.kr));
+    var title = document.createElement("h2");
+    title.className = "grammar-title";
+    var emojiEl = document.createElement("span");
+    emojiEl.className = "verb-emoji";
+    emojiEl.textContent = item.emoji;
+    title.appendChild(emojiEl);
+    title.appendChild(document.createTextNode(item.kr));
 
-      var rrEl = document.createElement("p");
-      rrEl.className = "reaction-rr";
-      rrEl.textContent = item.rr;
+    var rrEl = document.createElement("p");
+    rrEl.className = "reaction-rr";
+    rrEl.textContent = item.rr;
 
-      var english = document.createElement("p");
-      english.className = "grammar-english";
-      english.textContent = item.en;
+    var english = document.createElement("p");
+    english.className = "grammar-english";
+    english.textContent = item.en;
 
-      headText.appendChild(title);
-      headText.appendChild(rrEl);
-      headText.appendChild(english);
-      head.appendChild(headText);
-      head.appendChild(buildAudioButton(item.audio));
+    headText.appendChild(title);
+    headText.appendChild(rrEl);
+    headText.appendChild(english);
+    head.appendChild(headText);
+    head.appendChild(buildAudioButton(item.audio));
+    card.appendChild(head);
 
-      var examplesWrap = document.createElement("div");
-      examplesWrap.className = "grammar-examples";
-      var examplesLabel = document.createElement("span");
-      examplesLabel.className = "grammar-label";
-      examplesLabel.textContent = "Examples";
-      examplesWrap.appendChild(examplesLabel);
+    if(item.meaning){
+      var meaningWrap = document.createElement("div");
+      meaningWrap.className = "grammar-when";
+      var meaningLabel = document.createElement("span");
+      meaningLabel.className = "grammar-label";
+      meaningLabel.textContent = "Meaning";
+      var meaningText = document.createElement("p");
+      meaningText.textContent = item.meaning;
+      meaningWrap.appendChild(meaningLabel);
+      meaningWrap.appendChild(meaningText);
+      card.appendChild(meaningWrap);
+    }
 
-      item.examples.forEach(function(ex){
-        var row = document.createElement("div");
-        row.className = "example-row";
+    var examplesWrap = document.createElement("div");
+    examplesWrap.className = "grammar-examples";
+    var examplesLabel = document.createElement("span");
+    examplesLabel.className = "grammar-label";
+    examplesLabel.textContent = item.examples.length > 1 ? "Examples" : "Example";
+    examplesWrap.appendChild(examplesLabel);
 
-        var textWrap = document.createElement("div");
-        textWrap.className = "example-text";
+    item.examples.forEach(function(ex){
+      var row = document.createElement("div");
+      row.className = "example-row";
 
-        var krEl = document.createElement("p");
-        krEl.className = "example-kr";
-        krEl.textContent = ex.kr;
+      var textWrap = document.createElement("div");
+      textWrap.className = "example-text";
 
+      var krEl = document.createElement("p");
+      krEl.className = "example-kr";
+      krEl.textContent = ex.kr;
+      textWrap.appendChild(krEl);
+
+      if(ex.rr){
         var exRrEl = document.createElement("p");
         exRrEl.className = "example-rr";
         exRrEl.textContent = ex.rr;
-
-        var enEl = document.createElement("p");
-        enEl.className = "example-en";
-        enEl.textContent = ex.en;
-
-        textWrap.appendChild(krEl);
         textWrap.appendChild(exRrEl);
-        textWrap.appendChild(enEl);
-        row.appendChild(textWrap);
-        examplesWrap.appendChild(row);
+      }
+
+      var enEl = document.createElement("p");
+      enEl.className = "example-en";
+      enEl.textContent = ex.en;
+      textWrap.appendChild(enEl);
+
+      row.appendChild(textWrap);
+      if(ex.audio){ row.appendChild(buildAudioButton(ex.audio)); }
+      examplesWrap.appendChild(row);
+    });
+
+    card.appendChild(examplesWrap);
+    return card;
+  }
+
+  function renderPairs(){
+    var groupsEl = document.getElementById("pairsGroups");
+    groupsEl.innerHTML = "";
+
+    pairsData.forEach(function(group){
+      var groupEl = document.createElement("div");
+      groupEl.className = "pairs-group";
+
+      var groupTitle = document.createElement("h3");
+      groupTitle.className = "pairs-group-title";
+      groupTitle.textContent = group.group;
+      groupEl.appendChild(groupTitle);
+
+      group.corners.forEach(function(corner){
+        var cornerEl = document.createElement("div");
+        cornerEl.className = "pairs-corner";
+
+        var cornerTitle = document.createElement("h4");
+        cornerTitle.className = "pairs-corner-title";
+        cornerTitle.textContent = corner.title;
+        cornerEl.appendChild(cornerTitle);
+
+        var listEl = document.createElement("div");
+        listEl.className = "grammar-list";
+        corner.cards.forEach(function(item){
+          listEl.appendChild(buildPairCard(item, corner.badge));
+        });
+        cornerEl.appendChild(listEl);
+        groupEl.appendChild(cornerEl);
       });
 
-      card.appendChild(badge);
-      card.appendChild(head);
-      card.appendChild(examplesWrap);
-      listEl.appendChild(card);
+      groupsEl.appendChild(groupEl);
     });
   }
 
-  renderWear();
+  renderPairs();
 
   // ---- Listening Mini Quiz corner ----
   var quizData = [
