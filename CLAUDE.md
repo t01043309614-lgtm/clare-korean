@@ -76,6 +76,8 @@ Hook → 한국어 → Romanization → English → Meaning → Example
 
 - 카드 내용은 검색엔진이 읽을 수 있도록 index.html 안에 미리 글자로 들어가 있다(`<!-- prerender:ID -->` 구간).
 - 카드/데이터를 추가하거나 수정한 뒤에는 커밋 전에 반드시 `python tools/prerender.py`를 실행해서 이 구간을 갱신한다.
+- google82f9c3cf38653beb.html, robots.txt, sitemap.xml은 절대 지우지 말 것. (google82f9c3cf38653beb.html은 Google Search Console 인증 파일이라 이름과 내용도 바꾸지 않는다.)
+- 새 코너나 탭을 추가하면 sitemap.xml도 같이 업데이트할 것. (지금은 한 페이지라 URL은 하나이므로, 최소한 `<lastmod>`를 작업한 날짜로 바꾼다.)
 
 ## 배포
 
