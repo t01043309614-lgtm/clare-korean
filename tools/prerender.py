@@ -24,7 +24,8 @@ INDEX = ROOT / "index.html"
 
 # Containers whose content is rendered by JavaScript.
 CONTAINERS = ["tabs", "cardsGrid", "grammarList", "reactionsList",
-              "situationalTabs", "situationalList", "pairsGroups", "quizList"]
+              "situationalTabs", "situationalList", "pairsGroups", "quizList",
+              "dialoguesList"]
 
 COLLECT_JS = """() => {
   const out = {};
@@ -39,7 +40,7 @@ COLLECT_JS = """() => {
   };
   out.cardsGrid = allTabs('tabs', 'cardsGrid');
   out.situationalList = allTabs('situationalTabs', 'situationalList');
-  for (const id of ['tabs', 'grammarList', 'reactionsList', 'situationalTabs', 'pairsGroups', 'quizList']) {
+  for (const id of ['tabs', 'grammarList', 'reactionsList', 'situationalTabs', 'pairsGroups', 'quizList', 'dialoguesList']) {
     out[id] = html(id);
   }
   return out;

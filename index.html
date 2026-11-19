@@ -96,6 +96,25 @@
     letter-spacing:0.04em;
     opacity:0.85;
   }
+  .workbook-btns{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:0 10px;
+  }
+  .dialogue-speaker{
+    flex:none;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    background:var(--mint-soft);
+    color:var(--mint-dark);
+    font-weight:700;
+    font-size:0.8rem;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
   .subtitle{
     margin:0;
     color:var(--muted);
@@ -718,10 +737,16 @@
       <span class="brand">Stylish Korean Clare</span>
       <h1>Clare's Korean</h1>
       <p class="subtitle">Real Korean for real conversations.</p>
-      <a class="workbook-btn" href="assets/workbook/level1-everyday-korean.pdf" download>
-        <span class="workbook-btn-kr">📘 무료 워크북 다운로드</span>
-        <span class="workbook-btn-en">Free Level 1 Workbook (PDF)</span>
-      </a>
+      <div class="workbook-btns">
+        <a class="workbook-btn" href="assets/workbook/level1-everyday-korean.pdf" download>
+          <span class="workbook-btn-kr">📘 무료 워크북 다운로드</span>
+          <span class="workbook-btn-en">Free Level 1 Workbook (PDF)</span>
+        </a>
+        <a class="workbook-btn" href="assets/workbook/level2-everyday-korean.pdf" download>
+          <span class="workbook-btn-kr">📗 무료 워크북 다운로드</span>
+          <span class="workbook-btn-en">Free Level 2 Workbook (PDF)</span>
+        </a>
+      </div>
     </header>
 
     <nav class="corner-nav" id="cornerNav">
@@ -731,6 +756,7 @@
       <button class="corner-btn" type="button" data-corner="situational">Situational Phrases</button>
       <button class="corner-btn" type="button" data-corner="pairs">Learn Them as Pairs</button>
       <button class="corner-btn" type="button" data-corner="quiz">Listening Quiz</button>
+      <button class="corner-btn" type="button" data-corner="dialogues">Mini Dialogues</button>
     </nav>
 
     <section class="corner active" id="corner-flashcards">
@@ -772,6 +798,11 @@
       <p class="quiz-score" id="quizScore"></p>
       <div class="grammar-list" id="quizList" translate="no"><!-- prerender:quizList --><article class="grammar-card" translate="no"><span class="grammar-badge">QUESTION 1</span><div class="quiz-listen"><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button><span>Listen first</span></div><p class="quiz-question">What did the person put on before going out?</p><div class="quiz-options"><button type="button" class="quiz-option">A) 모자</button><button type="button" class="quiz-option">B) 신발</button><button type="button" class="quiz-option">C) 장갑</button></div><p class="quiz-feedback" hidden=""></p><div class="quiz-answer" hidden=""><p class="example-kr">신발을 신고 나갔어요.</p><p class="example-rr">Sinbareul singo nagasseoyo.</p><p class="example-en">I put on my shoes and went out.</p></div></article><article class="grammar-card" translate="no"><span class="grammar-badge">QUESTION 2</span><div class="quiz-listen"><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button><span>Listen first</span></div><p class="quiz-question">What is the speaker asking for?</p><div class="quiz-options"><button type="button" class="quiz-option">A) 메뉴</button><button type="button" class="quiz-option">B) 계산서</button><button type="button" class="quiz-option">C) 물</button></div><p class="quiz-feedback" hidden=""></p><div class="quiz-answer" hidden=""><p class="example-kr">저기요, 물 좀 주세요.</p><p class="example-rr">Jeogiyo, mul jom juseyo.</p><p class="example-en">Excuse me, some water, please.</p></div></article><article class="grammar-card" translate="no"><span class="grammar-badge">QUESTION 3</span><div class="quiz-listen"><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button><span>Listen first</span></div><p class="quiz-question">What is the speaker doing?</p><div class="quiz-options"><button type="button" class="quiz-option">A) Ordering food</button><button type="button" class="quiz-option">B) Giving taxi directions</button><button type="button" class="quiz-option">C) Asking for a bag</button></div><p class="quiz-feedback" hidden=""></p><div class="quiz-answer" hidden=""><p class="example-kr">이 주소로 가주세요.</p><p class="example-rr">I jusoro gajuseyo.</p><p class="example-en">Please take me to this address.</p></div></article><article class="grammar-card" translate="no"><span class="grammar-badge">QUESTION 4</span><div class="quiz-listen"><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button><span>Listen first</span></div><p class="quiz-question">What is the speaker looking for?</p><div class="quiz-options"><button type="button" class="quiz-option">A) Subway station</button><button type="button" class="quiz-option">B) Bathroom</button><button type="button" class="quiz-option">C) Cafe</button></div><p class="quiz-feedback" hidden=""></p><div class="quiz-answer" hidden=""><p class="example-kr">화장실이 어디예요?</p><p class="example-rr">Hwajangsiri eodiyeyo?</p><p class="example-en">Where is the bathroom?</p></div></article><article class="grammar-card" translate="no"><span class="grammar-badge">QUESTION 5</span><div class="quiz-listen"><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button><span>Listen first</span></div><p class="quiz-question">What is being offered?</p><div class="quiz-options"><button type="button" class="quiz-option">A) A receipt</button><button type="button" class="quiz-option">B) A bag</button><button type="button" class="quiz-option">C) A discount</button></div><p class="quiz-feedback" hidden=""></p><div class="quiz-answer" hidden=""><p class="example-kr">봉투 필요하세요?</p><p class="example-rr">Bongtu piryohaseyo?</p><p class="example-en">Do you need a bag?</p></div></article><article class="grammar-card" translate="no"><span class="grammar-badge">QUESTION 6</span><div class="quiz-listen"><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button><span>Listen first</span></div><p class="quiz-question">Who is the speaker talking to?</p><div class="quiz-options"><button type="button" class="quiz-option">A) A friend</button><button type="button" class="quiz-option">B) Grandma</button><button type="button" class="quiz-option">C) A server</button></div><p class="quiz-feedback" hidden=""></p><div class="quiz-answer" hidden=""><p class="example-kr">할머니, 맛있게 드세요.</p><p class="example-rr">Halmeoni, masitge deuseyo.</p><p class="example-en">Grandma, please enjoy your meal.</p></div></article><article class="grammar-card" translate="no"><span class="grammar-badge">QUESTION 7</span><div class="quiz-listen"><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button><span>Listen first</span></div><p class="quiz-question">What happened to the speaker?</p><div class="quiz-options"><button type="button" class="quiz-option">A) They're hungry</button><button type="button" class="quiz-option">B) They lost their phone</button><button type="button" class="quiz-option">C) They're late</button></div><p class="quiz-feedback" hidden=""></p><div class="quiz-answer" hidden=""><p class="example-kr">어떡해, 늦었어!</p><p class="example-rr">Eotteokae, neujeosseo!</p><p class="example-en">Oh no, I'm late!</p></div></article><article class="grammar-card" translate="no"><span class="grammar-badge">QUESTION 8</span><div class="quiz-listen"><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button><span>Listen first</span></div><p class="quiz-question">Why did the speaker stay home?</p><div class="quiz-options"><button type="button" class="quiz-option">A) It rained</button><button type="button" class="quiz-option">B) It was too cold</button><button type="button" class="quiz-option">C) They were sick</button></div><p class="quiz-feedback" hidden=""></p><div class="quiz-answer" hidden=""><p class="example-kr">비가 와서 집에 있었어요.</p><p class="example-rr">Biga waseo jibe isseosseoyo.</p><p class="example-en">It rained, so I stayed home.</p></div></article><article class="grammar-card" translate="no"><span class="grammar-badge">QUESTION 9</span><div class="quiz-listen"><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button><span>Listen first</span></div><p class="quiz-question">Which place is the speaker asking about?</p><div class="quiz-options"><button type="button" class="quiz-option">A) Busan</button><button type="button" class="quiz-option">B) Jeju Island</button><button type="button" class="quiz-option">C) Seoul</button></div><p class="quiz-feedback" hidden=""></p><div class="quiz-answer" hidden=""><p class="example-kr">제주도 가 봤어요?</p><p class="example-rr">Jejudo ga bwasseoyo?</p><p class="example-en">Have you been to Jeju Island?</p></div></article><article class="grammar-card" translate="no"><span class="grammar-badge">QUESTION 10</span><div class="quiz-listen"><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button><span>Listen first</span></div><p class="quiz-question">What does the speaker drink a lot of every day?</p><div class="quiz-options"><button type="button" class="quiz-option">A) Coffee</button><button type="button" class="quiz-option">B) Tea</button><button type="button" class="quiz-option">C) Water</button></div><p class="quiz-feedback" hidden=""></p><div class="quiz-answer" hidden=""><p class="example-kr">매일 물을 많이 마셔요.</p><p class="example-rr">Maeil mureul mani masyeoyo.</p><p class="example-en">I drink a lot of water every day.</p></div></article><article class="grammar-card" translate="no"><span class="grammar-badge">QUESTION 11</span><div class="quiz-listen"><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button><span>Listen first</span></div><p class="quiz-question">What is the person doing?</p><div class="quiz-options"><button type="button" class="quiz-option">A) Reading</button><button type="button" class="quiz-option">B) Writing</button><button type="button" class="quiz-option">C) Sending</button></div><p class="quiz-feedback" hidden=""></p><div class="quiz-answer" hidden=""><p class="example-kr">편지를 써요.</p><p class="example-rr">Pyeonjireul sseoyo.</p><p class="example-en">I write a letter.</p></div></article><article class="grammar-card" translate="no"><span class="grammar-badge">QUESTION 12</span><div class="quiz-listen"><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button><span>Listen first</span></div><p class="quiz-question">What are they doing?</p><div class="quiz-options"><button type="button" class="quiz-option">A) Wearing a hat</button><button type="button" class="quiz-option">B) Buying a hat</button><button type="button" class="quiz-option">C) Making a hat</button></div><p class="quiz-feedback" hidden=""></p><div class="quiz-answer" hidden=""><p class="example-kr">모자를 써요.</p><p class="example-rr">Mojareul sseoyo.</p><p class="example-en">I wear a hat.</p></div></article><article class="grammar-card" translate="no"><span class="grammar-badge">QUESTION 13</span><div class="quiz-listen"><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button><span>Listen first</span></div><p class="quiz-question">What happened?</p><div class="quiz-options"><button type="button" class="quiz-option">A) Saved money</button><button type="button" class="quiz-option">B) Spent a lot of money</button><button type="button" class="quiz-option">C) Found money</button></div><p class="quiz-feedback" hidden=""></p><div class="quiz-answer" hidden=""><p class="example-kr">돈을 많이 썼어요.</p><p class="example-rr">Doneul mani sseosseoyo.</p><p class="example-en">I spent a lot of money.</p></div></article><article class="grammar-card" translate="no"><span class="grammar-badge">QUESTION 14</span><div class="quiz-listen"><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button><span>Listen first</span></div><p class="quiz-question">What did they take?</p><div class="quiz-options"><button type="button" class="quiz-option">A) A bag</button><button type="button" class="quiz-option">B) An umbrella</button><button type="button" class="quiz-option">C) A hat</button></div><p class="quiz-feedback" hidden=""></p><div class="quiz-answer" hidden=""><p class="example-kr">우산을 쓰고 나갔어요.</p><p class="example-rr">Usaneul sseugo nagasseoyo.</p><p class="example-en">I went out with an umbrella.</p></div></article><article class="grammar-card" translate="no"><span class="grammar-badge">QUESTION 15</span><div class="quiz-listen"><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button><span>Listen first</span></div><p class="quiz-question">What did they do?</p><div class="quiz-options"><button type="button" class="quiz-option">A) Used strength to move something</button><button type="button" class="quiz-option">B) Ran fast</button><button type="button" class="quiz-option">C) Fell down</button></div><p class="quiz-feedback" hidden=""></p><div class="quiz-answer" hidden=""><p class="example-kr">힘을 써서 옮겼어요.</p><p class="example-rr">Himeul sseoseo omgyeosseoyo.</p><p class="example-en">I used effort to move it.</p></div></article><!-- /prerender:quizList --></div>
       <div class="quiz-reset"><button class="ctrl-btn" type="button" id="quizResetBtn">Try again</button></div>
+    </section>
+
+    <section class="corner" id="corner-dialogues">
+      <p class="grammar-intro">미니 대화 — Short real conversations. Listen to Clare line by line.</p>
+      <div class="grammar-list" id="dialoguesList" translate="no"><!-- prerender:dialoguesList --><article class="grammar-card" translate="no"><span class="grammar-badge">Dialogue 1</span><h2 class="grammar-title"><span class="verb-emoji">🍽️</span>식당</h2><p class="grammar-english">At a Restaurant</p><div class="grammar-examples"><div class="example-row"><span class="dialogue-speaker">A</span><div class="example-text"><p class="example-kr">커피 드릴까요?</p><p class="example-rr">Keopi deurilkkayo?</p><p class="example-en">Would you like some coffee?</p></div><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button></div><div class="example-row"><span class="dialogue-speaker">B</span><div class="example-text"><p class="example-kr">아니요, 괜찮아요.</p><p class="example-rr">Aniyo, gwaenchanayo.</p><p class="example-en">No, thanks.</p></div><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button></div><div class="example-row"><span class="dialogue-speaker">A</span><div class="example-text"><p class="example-kr">그럼 물 드릴게요.</p><p class="example-rr">Geureom mul deurilgeyo.</p><p class="example-en">Then I'll bring you some water.</p></div><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button></div><div class="example-row"><span class="dialogue-speaker">B</span><div class="example-text"><p class="example-kr">네, 감사합니다.</p><p class="example-rr">Ne, gamsahamnida.</p><p class="example-en">Yes, thank you.</p></div><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button></div></div></article><article class="grammar-card" translate="no"><span class="grammar-badge">Dialogue 2</span><h2 class="grammar-title"><span class="verb-emoji">📞</span>친구</h2><p class="grammar-english">With a Friend</p><div class="grammar-examples"><div class="example-row"><span class="dialogue-speaker">A</span><div class="example-text"><p class="example-kr">아까 왜 전화 안 받았어요?</p><p class="example-rr">Akka wae jeonhwa an badasseoyo?</p><p class="example-en">Why didn't you answer the phone earlier?</p></div><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button></div><div class="example-row"><span class="dialogue-speaker">B</span><div class="example-text"><p class="example-kr">미안해요. 이따가 전화할게요.</p><p class="example-rr">Mianhaeyo. Ittaga jeonhwahalgeyo.</p><p class="example-en">Sorry. I'll call you later.</p></div><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button></div><div class="example-row"><span class="dialogue-speaker">A</span><div class="example-text"><p class="example-kr">알겠어요. 기다릴게요.</p><p class="example-rr">Algesseoyo. Gidarilgeyo.</p><p class="example-en">Okay. I'll wait.</p></div><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button></div></div></article><article class="grammar-card" translate="no"><span class="grammar-badge">Dialogue 3</span><h2 class="grammar-title"><span class="verb-emoji">📝</span>시험</h2><p class="grammar-english">Before an Exam</p><div class="grammar-examples"><div class="example-row"><span class="dialogue-speaker">A</span><div class="example-text"><p class="example-kr">내일 시험이죠? 시험 잘 봐!</p><p class="example-rr">Naeil siheomijyo? Siheom jal bwa!</p><p class="example-en">Your exam is tomorrow, right? Do well!</p></div><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button></div><div class="example-row"><span class="dialogue-speaker">B</span><div class="example-text"><p class="example-kr">고마워요. 꼭 붙을게요!</p><p class="example-rr">Gomawoyo. Kkok buteulgeyo!</p><p class="example-en">Thanks. I'll definitely pass!</p></div><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button></div><div class="example-row"><span class="dialogue-speaker">A</span><div class="example-text"><p class="example-kr">합격 엿 여기 있어요!</p><p class="example-rr">Hapgyeok yeot yeogi isseoyo!</p><p class="example-en">Here's your pass-candy!</p></div><button type="button" class="audio-btn" aria-label="Play audio" title="Play audio">🔊</button></div></div><div class="grammar-when" style="margin-top: 14px; margin-bottom: 0px;"><span class="grammar-label">Note</span><p>합격 엿 = sticky taffy Koreans give before exams so the luck "sticks."</p></div></article><!-- /prerender:dialoguesList --></div>
     </section>
 
     <footer>
@@ -2206,6 +2237,112 @@
 
   document.getElementById("quizResetBtn").addEventListener("click", renderQuiz);
   renderQuiz();
+
+  // ---- Mini Dialogues corner ----
+  // Each line: { speaker, kr, rr, en, audio }. Audio: assets/audio/dialogues/.
+  // tools/build_workbook.py (Level 2) reads these lines, so keep one line per object.
+  var dialoguesData = [
+    { title:"식당", en:"At a Restaurant", emoji:"🍽️",
+      lines: [
+        { speaker:"A", kr:"커피 드릴까요?", rr:"Keopi deurilkkayo?", en:"Would you like some coffee?", audio:"assets/audio/dialogues/dialogue1_line1.mp3" },
+        { speaker:"B", kr:"아니요, 괜찮아요.", rr:"Aniyo, gwaenchanayo.", en:"No, thanks.", audio:"assets/audio/dialogues/dialogue1_line2.mp3" },
+        { speaker:"A", kr:"그럼 물 드릴게요.", rr:"Geureom mul deurilgeyo.", en:"Then I'll bring you some water.", audio:"assets/audio/dialogues/dialogue1_line3.mp3" },
+        { speaker:"B", kr:"네, 감사합니다.", rr:"Ne, gamsahamnida.", en:"Yes, thank you.", audio:"assets/audio/dialogues/dialogue1_line4.mp3" }
+      ] },
+    { title:"친구", en:"With a Friend", emoji:"📞",
+      lines: [
+        { speaker:"A", kr:"아까 왜 전화 안 받았어요?", rr:"Akka wae jeonhwa an badasseoyo?", en:"Why didn't you answer the phone earlier?", audio:"assets/audio/dialogues/dialogue2_line1.mp3" },
+        { speaker:"B", kr:"미안해요. 이따가 전화할게요.", rr:"Mianhaeyo. Ittaga jeonhwahalgeyo.", en:"Sorry. I'll call you later.", audio:"assets/audio/dialogues/dialogue2_line2.mp3" },
+        { speaker:"A", kr:"알겠어요. 기다릴게요.", rr:"Algesseoyo. Gidarilgeyo.", en:"Okay. I'll wait.", audio:"assets/audio/dialogues/dialogue2_line3.mp3" }
+      ] },
+    { title:"시험", en:"Before an Exam", emoji:"📝",
+      note:"합격 엿 = sticky taffy Koreans give before exams so the luck \"sticks.\"",
+      lines: [
+        { speaker:"A", kr:"내일 시험이죠? 시험 잘 봐!", rr:"Naeil siheomijyo? Siheom jal bwa!", en:"Your exam is tomorrow, right? Do well!", audio:"assets/audio/dialogues/dialogue3_line1.mp3" },
+        { speaker:"B", kr:"고마워요. 꼭 붙을게요!", rr:"Gomawoyo. Kkok buteulgeyo!", en:"Thanks. I'll definitely pass!", audio:"assets/audio/dialogues/dialogue3_line2.mp3" },
+        { speaker:"A", kr:"합격 엿 여기 있어요!", rr:"Hapgyeok yeot yeogi isseoyo!", en:"Here's your pass-candy!", audio:"assets/audio/dialogues/dialogue3_line3.mp3" }
+      ] }
+  ];
+
+  function renderDialogues(){
+    var listEl = document.getElementById("dialoguesList");
+    listEl.innerHTML = "";
+    dialoguesData.forEach(function(dlg, dIdx){
+      var card = document.createElement("article");
+      card.className = "grammar-card";
+      card.setAttribute("translate", "no");
+
+      var badge = document.createElement("span");
+      badge.className = "grammar-badge";
+      badge.textContent = "Dialogue " + (dIdx + 1);
+      card.appendChild(badge);
+
+      var title = document.createElement("h2");
+      title.className = "grammar-title";
+      var emojiEl = document.createElement("span");
+      emojiEl.className = "verb-emoji";
+      emojiEl.textContent = dlg.emoji;
+      title.appendChild(emojiEl);
+      title.appendChild(document.createTextNode(dlg.title));
+      card.appendChild(title);
+
+      var english = document.createElement("p");
+      english.className = "grammar-english";
+      english.textContent = dlg.en;
+      card.appendChild(english);
+
+      var linesWrap = document.createElement("div");
+      linesWrap.className = "grammar-examples";
+      dlg.lines.forEach(function(line){
+        var row = document.createElement("div");
+        row.className = "example-row";
+
+        var speaker = document.createElement("span");
+        speaker.className = "dialogue-speaker";
+        speaker.textContent = line.speaker;
+        row.appendChild(speaker);
+
+        var textWrap = document.createElement("div");
+        textWrap.className = "example-text";
+        var krEl = document.createElement("p");
+        krEl.className = "example-kr";
+        krEl.textContent = line.kr;
+        var rrEl = document.createElement("p");
+        rrEl.className = "example-rr";
+        rrEl.textContent = line.rr;
+        var enEl = document.createElement("p");
+        enEl.className = "example-en";
+        enEl.textContent = line.en;
+        textWrap.appendChild(krEl);
+        textWrap.appendChild(rrEl);
+        textWrap.appendChild(enEl);
+        row.appendChild(textWrap);
+
+        row.appendChild(buildAudioButton(line.audio));
+        linesWrap.appendChild(row);
+      });
+      card.appendChild(linesWrap);
+
+      if(dlg.note){
+        var noteWrap = document.createElement("div");
+        noteWrap.className = "grammar-when";
+        noteWrap.style.marginTop = "14px";
+        noteWrap.style.marginBottom = "0";
+        var noteLabel = document.createElement("span");
+        noteLabel.className = "grammar-label";
+        noteLabel.textContent = "Note";
+        var noteText = document.createElement("p");
+        noteText.textContent = dlg.note;
+        noteWrap.appendChild(noteLabel);
+        noteWrap.appendChild(noteText);
+        card.appendChild(noteWrap);
+      }
+
+      listEl.appendChild(card);
+    });
+  }
+
+  renderDialogues();
 
   // ---- Top-level corner switching (Flashcards / Grammar / future corners) ----
   var cornerNavEl = document.getElementById("cornerNav");

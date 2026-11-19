@@ -111,6 +111,8 @@ Hook → 한국어 → Romanization → English → Meaning → Example
 8. 새 규칙이나 수정 사항이 생기면 이 섹션에 추가한다.
    - 워크북 로마자는 index.html 카드 데이터에서 가져오므로, index.html을 고친 뒤 `python tools/build_workbook.py`로 PDF를 다시 만든다. 로마자에 하이픈이 있으면 빌드가 멈춘다.
    - 워크북 Level 1의 Everyday Korean은 처음 18장만 쓴다(`LEVEL1_EVERYDAY_COUNT`). 새 카드를 워크북에 넣는 건 Clare가 따로 지시할 때만.
+   - 워크북 Level 2는 `python tools/build_workbook.py --level 2`로 만든다(assets/workbook/level2-everyday-korean.pdf). Level 1은 옵션 없이 실행할 때만 다시 만들어지므로, Level 2 작업 중에는 Level 1 PDF가 바뀌지 않는다. Level 2는 페이지 넘침이 있으면 PDF를 만들지 않고 멈춘다.
+   - Mini Dialogues 대사는 index.html의 `dialoguesData`에 있고, 워크북 Level 2가 여기서 한국어·로마자·영어를 가져온다. 음성은 assets/audio/dialogues/dialogue{N}_line{M}.mp3.
 
 ## 배포
 
