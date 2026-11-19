@@ -79,6 +79,15 @@ Hook → 한국어 → Romanization → English → Meaning → Example
 - google82f9c3cf38653beb.html, robots.txt, sitemap.xml은 절대 지우지 말 것. (google82f9c3cf38653beb.html은 Google Search Console 인증 파일이라 이름과 내용도 바꾸지 않는다.)
 - 새 코너나 탭을 추가하면 sitemap.xml도 같이 업데이트할 것. (지금은 한 페이지라 URL은 하나이므로, 최소한 `<lastmod>`를 작업한 날짜로 바꾼다.)
 
+## 자동 번역 방지
+
+- 모든 카드의 한국어, 로마자, 영어 뜻에는 translate="no"가 있어야 한다. index.html을 수정하거나 prerender.py를 실행한 뒤에는 반드시 확인한다.
+- 이를 위해 지켜야 할 것:
+  - `<head>`의 `<meta name="google" content="notranslate">`와 `<html lang="en">`을 지우지 않는다.
+  - 카드 컨테이너(tabs, cardsGrid, grammarList, reactionsList, situationalTabs, situationalList, pairsGroups, quizList)의 `translate="no"`를 지우지 않는다.
+  - 카드를 만드는 JS 함수에서 `card.className = ...` 바로 다음 줄의 `card.setAttribute("translate", "no");`를 지우지 않는다. 새 카드 종류를 만들면 같은 줄을 넣는다.
+- `python tools/prerender.py`는 끝에 자동으로 검사한다. 브라우저 없이 검사만 하려면 `python tools/prerender.py --check`. WARNING이 나오면 커밋하지 말고 먼저 고친다.
+
 ## 배포
 
 - 사이트 주소: https://clare-korean-flashcards.netlify.app/

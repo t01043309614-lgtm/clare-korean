@@ -83,8 +83,50 @@ def inject(src, rendered):
     return src
 
 
+CARD_CLASSES = ("flip-card", "grammar-card", "reaction-card")
+
+
+def check_notranslate(src):
+    """Return a list of problems that would let phone browsers auto-translate
+    the Korean, romanization, or English meanings on the cards."""
+    problems = []
+    if not re.search(r'<meta name="google" content="notranslate">', src):
+        problems.append('<meta name="google" content="notranslate"> is missing from <head>')
+    if not re.search(r'<html lang="en">', src):
+        problems.append('<html lang="en"> is missing')
+    for cid in CONTAINERS:
+        m = re.search(r'<\w+[^>]*\bid="' + cid + r'"[^>]*>', src)
+        if not m or 'translate="no"' not in m.group(0):
+            problems.append(f'#{cid} container has no translate="no"')
+    for cls in CARD_CLASSES:
+        tags = re.findall(r'<\w+ class="' + cls + r'[ "][^>]*>', src)
+        bad = [t for t in tags if 'translate="no"' not in t]
+        if bad:
+            problems.append(f'{len(bad)} of {len(tags)} .{cls} cards have no translate="no"')
+        js = re.findall(r'card\.className = "' + cls + r'[^\n]*\n\s*card\.setAttribute\("translate", "no"\);', src)
+        if f'card.className = "{cls}' in src and not js:
+            problems.append(f'JS builder for .{cls} does not set translate="no"')
+    return problems
+
+
+def report(problems):
+    if problems:
+        print("WARNING: translation protection is broken:")
+        for p in problems:
+            print("  -", p)
+        raise SystemExit(1)
+    print('Translation check OK: notranslate meta + translate="no" on all cards.')
+
+
 if __name__ == "__main__":
+    import sys
+    if "--check" in sys.argv:
+        # Quick check only, no browser:  python tools/prerender.py --check
+        report(check_notranslate(INDEX.read_text(encoding="utf-8")))
+        raise SystemExit(0)
     rendered = collect()
     src = INDEX.read_text(encoding="utf-8")
-    INDEX.write_text(inject(src, rendered), encoding="utf-8", newline="")
+    out = inject(src, rendered)
+    INDEX.write_text(out, encoding="utf-8", newline="")
     print("Pre-rendered:", ", ".join(f"{k} ({len(rendered[k])} chars)" for k in CONTAINERS))
+    report(check_notranslate(out))
