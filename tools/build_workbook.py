@@ -21,6 +21,10 @@ SITE = "clare-korean-flashcards.netlify.app"
 
 FIELD = re.compile(r'(\w+):"((?:[^"\\]|\\.)*)"')
 
+# Level 1 covers the first 18 Everyday Korean cards (the set in the published
+# workbook). Newer cards (Topic19+) join the workbook only when Clare asks.
+LEVEL1_EVERYDAY_COUNT = 18
+
 
 def parse_entries(block):
     """Each card/phrase is a `{ kr:"..", en:"..", ... }` object; nested
@@ -36,7 +40,7 @@ def parse_entries(block):
 def load_data():
     src = INDEX.read_text(encoding="utf-8")
     every = src[src.index('id: "everyday"'):src.index('id: "real"')]
-    everyday = parse_entries(every)
+    everyday = parse_entries(every)[:LEVEL1_EVERYDAY_COUNT]
     sit = src[src.index("var situationalData = ["):]
     sit = sit[:sit.index("\n  ];")]
     cats = []
@@ -296,9 +300,14 @@ def build_html():
 
     total = len(pages)
     body = "".join(page(inner, i + 1, total, cls) for i, (cls, inner) in enumerate(pages))
+    for c in everyday + [p for cat in cats for p in cat["phrases"]]:
+        if "-" in c["rr"]:
+            raise SystemExit(f'Site rule: no hyphens in romanization. Fix "{c["rr"]}" in index.html first.')
+    # Site rule: no auto-translation (notranslate meta + translate="no").
     return ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
+            '<meta name="google" content="notranslate">'
             '<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">'
-            f'<style>{CSS}</style></head><body>{body}</body></html>'), total
+            f'<style>{CSS}</style></head><body translate="no">{body}</body></html>'), total
 
 
 def main():

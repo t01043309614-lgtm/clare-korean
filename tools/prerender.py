@@ -106,16 +106,21 @@ def check_notranslate(src):
         js = re.findall(r'card\.className = "' + cls + r'[^\n]*\n\s*card\.setAttribute\("translate", "no"\);', src)
         if f'card.className = "{cls}' in src and not js:
             problems.append(f'JS builder for .{cls} does not set translate="no"')
+    # Site rule: romanization follows the National Institute of Korean Language
+    # system and never uses hyphens.
+    script = src[src.index("<script>"):] if "<script>" in src else src
+    for rr in re.findall(r'\brr:\s*"([^"]*-[^"]*)"', script):
+        problems.append(f'romanization has a hyphen: "{rr}"')
     return problems
 
 
 def report(problems):
     if problems:
-        print("WARNING: translation protection is broken:")
+        print("WARNING: site rules are broken:")
         for p in problems:
             print("  -", p)
         raise SystemExit(1)
-    print('Translation check OK: notranslate meta + translate="no" on all cards.')
+    print('Site rules OK: notranslate meta + translate="no" on all cards, no hyphens in romanization.')
 
 
 if __name__ == "__main__":

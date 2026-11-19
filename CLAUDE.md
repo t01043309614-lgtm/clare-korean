@@ -79,14 +79,38 @@ Hook → 한국어 → Romanization → English → Meaning → Example
 - google82f9c3cf38653beb.html, robots.txt, sitemap.xml은 절대 지우지 말 것. (google82f9c3cf38653beb.html은 Google Search Console 인증 파일이라 이름과 내용도 바꾸지 않는다.)
 - 새 코너나 탭을 추가하면 sitemap.xml도 같이 업데이트할 것. (지금은 한 페이지라 URL은 하나이므로, 최소한 `<lastmod>`를 작업한 날짜로 바꾼다.)
 
-## 자동 번역 방지
+## 사이트 공통 규칙
 
-- 모든 카드의 한국어, 로마자, 영어 뜻에는 translate="no"가 있어야 한다. index.html을 수정하거나 prerender.py를 실행한 뒤에는 반드시 확인한다.
-- 이를 위해 지켜야 할 것:
-  - `<head>`의 `<meta name="google" content="notranslate">`와 `<html lang="en">`을 지우지 않는다.
-  - 카드 컨테이너(tabs, cardsGrid, grammarList, reactionsList, situationalTabs, situationalList, pairsGroups, quizList)의 `translate="no"`를 지우지 않는다.
-  - 카드를 만드는 JS 함수에서 `card.className = ...` 바로 다음 줄의 `card.setAttribute("translate", "no");`를 지우지 않는다. 새 카드 종류를 만들면 같은 줄을 넣는다.
-- `python tools/prerender.py`는 끝에 자동으로 검사한다. 브라우저 없이 검사만 하려면 `python tools/prerender.py --check`. WARNING이 나오면 커밋하지 말고 먼저 고친다.
+모든 작업(다른 코너, 새 카드, 워크북 포함) 전에 이 섹션을 먼저 읽고 따른다. 사이트(index.html)와 워크북(tools/build_workbook.py로 만드는 PDF) 모두에 적용한다.
+
+1. 번역 방지: 모든 카드의 한국어, 로마자, 영어 뜻에는 translate="no"가 있어야 하고, <head>에 <meta name="google" content="notranslate">가 있어야 한다. <html>은 lang="en"을 유지한다. index.html을 수정하거나 tools/prerender.py를 실행한 뒤에는 반드시 확인한다.
+   - 카드 컨테이너(tabs, cardsGrid, grammarList, reactionsList, situationalTabs, situationalList, pairsGroups, quizList)의 `translate="no"`를 지우지 않는다.
+   - 카드를 만드는 JS 함수에서 `card.className = ...` 바로 다음 줄의 `card.setAttribute("translate", "no");`를 지우지 않는다. 새 카드 종류를 만들면 같은 줄을 넣는다.
+   - 워크북 HTML에도 notranslate 메타와 `translate="no"`가 들어간다(build_workbook.py가 자동으로 넣는다).
+
+2. 로마자는 국립국어원 로마자 표기법(소리 나는 대로)을 따른다. 예: 얇다 yalda, 넓다 neolda, 짧다 jjalda. 하이픈은 쓰지 않는다(eommaneun).
+   - 표준 발음대로 적는다: 필요 [피료] piryo, 적립 [정닙] jeongnip, 거짓말 [거진말] geojinmal, 웬일 [웬닐] wennil, 별말씀을요 byeolmalsseumeuryo.
+   - 모음 앞의 ㄹ은 r, 받침 ㄹ은 l. 겹받침은 발음되는 것만 적는다.
+   - 명사(체언) 뒤의 ㅎ은 밝혀 적는다: 시작해요 sijakhaeyo, 도착했어요 dochakhaesseoyo. 용언은 거센소리를 반영한다: 어떡해 eotteokae, 어떻게 eotteoke.
+   - 된소리되기는 적지 않는다: 할게요 halgeyo, 독감 dokgam.
+   - 하이픈 예: eommaneun (O) / eomma-neun (X), angyeongeul (O) / angyeong-eul (X). 영어 약어도 소리대로 적는다: TV를 → tibireul.
+
+3. 카드 추가 시 먼저 중복 카드를 검색하고, 있으면 건너뛰고 보고한다.
+
+4. 새 카드 형식: 이모지 / 한국어 / 로마자 / 영어 뜻 / Meaning 줄 / 예문(오디오) / 예문 로마자 / 예문 영어 뜻. 기존 카드 모양은 건드리지 않는다.
+   - Flashcards: `meaning`과 `example.rr` 필드가 있는 카드에만 Meaning 줄과 예문 로마자가 보인다(`has-meaning`). 기존 카드에는 영향이 없다.
+
+5. 배포 전 점검: 로마자 표기, translate="no", 오디오 조각 수를 확인하고 이상이 있으면 push 전에 보고한다.
+   - `python tools/prerender.py`는 끝에 번역 방지와 로마자 하이픈을 자동으로 검사한다. 브라우저 없이 검사만 하려면 `python tools/prerender.py --check`. WARNING이 나오면 커밋하지 말고 먼저 고친다.
+   - 오디오: 무음 기준으로 나눈 조각 수가 카드 수(단어 + 예문)와 다르면 임의로 맞추지 않고 보고한다.
+
+6. 사용자가 명시하지 않은 파일(예: Topic4.m4a, Topic5.m4a)은 커밋하지 않는다.
+
+7. 카드나 코너를 추가하면 sitemap.xml의 lastmod를 오늘 날짜로 갱신한다.
+
+8. 새 규칙이나 수정 사항이 생기면 이 섹션에 추가한다.
+   - 워크북 로마자는 index.html 카드 데이터에서 가져오므로, index.html을 고친 뒤 `python tools/build_workbook.py`로 PDF를 다시 만든다. 로마자에 하이픈이 있으면 빌드가 멈춘다.
+   - 워크북 Level 1의 Everyday Korean은 처음 18장만 쓴다(`LEVEL1_EVERYDAY_COUNT`). 새 카드를 워크북에 넣는 건 Clare가 따로 지시할 때만.
 
 ## 배포
 
